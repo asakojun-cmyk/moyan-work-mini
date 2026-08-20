@@ -489,6 +489,26 @@ function armBlink(){
   };
   schedule();
 }
+/* 結果画面の雲アイコンが、アンケートの前でときどき頷いたり嬉しそうに揺れたりする */
+let cloudTimer = null;
+function armCloudReaction(){
+  if (cloudTimer) clearTimeout(cloudTimer);
+  const schedule = ()=>{
+    const delay = 2400 + Math.random()*2400;
+    cloudTimer = setTimeout(()=>{
+      const el = document.getElementById("surveyCloud");
+      if (el) {
+        const cls = Math.random() < 0.5 ? "nodding" : "wiggling";
+        el.classList.remove("nodding","wiggling");
+        void el.offsetWidth;
+        el.classList.add(cls);
+        el.addEventListener("animationend", ()=>el.classList.remove(cls), { once:true });
+        schedule();
+      }
+    }, delay);
+  };
+  schedule();
+}
 function showToast(msg){
   const t = document.createElement("div"); t.className="toast"; t.textContent=msg;
   document.body.appendChild(t);
@@ -1105,6 +1125,10 @@ function renderSummary(){
         ${buildDetailedMemoHtml(p)}
       </div>
 
+      <div style="text-align:center;margin:16px 0 6px">
+        <img class="moyan md float" id="surveyCloud" src="assets/cloud_chat.png" alt="" />
+      </div>
+
       <div class="survey-q">
         <p>この整理、どれに近いかな？</p>
         <div class="optionlist" id="q-match">
@@ -1170,6 +1194,7 @@ function renderSummary(){
   const xlink = document.getElementById("xlink");
   if (xlink) xlink.onclick = ()=>trackEvent("dm_click");
   armBlink();
+  armCloudReaction();
 }
 
 function bindMiniChat(){
