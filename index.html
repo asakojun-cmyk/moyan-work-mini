@@ -64,12 +64,14 @@ button{font:inherit;cursor:pointer;color:inherit}
 .badge-tap span{background:linear-gradient(transparent 20%,rgba(255,255,255,.94) 20%);
   padding:0 4px}
 .top-lead{max-width:270px;margin-top:2px;font-size:12px;line-height:1.85}
-.screen.top-screen{position:relative;justify-content:center;align-items:center;text-align:center;padding-top:10px}
+.screen.top-screen{position:relative;align-items:center;text-align:center;padding-top:10px}
+.top-main{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .top-hero{position:relative;width:100%;height:clamp(118px,25svh,170px);margin:0 0 10px;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;z-index:0}
 .top-hero .top-moyan{width:clamp(104px,32vw,136px);margin:0 auto}
 .top-copy{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 @media (max-height:620px){
-  .screen.top-screen{justify-content:flex-start;padding-top:8px}
+  .top-main{justify-content:flex-start}
+  .screen.top-screen{padding-top:8px}
   .top-hero{height:118px;margin-bottom:6px}
   .top-hero .top-moyan{width:108px}
   .top-copy .h1{font-size:20px}
@@ -560,17 +562,19 @@ function renderTop(){
   root().innerHTML = `
     ${header()}
     <section class="screen top-screen">
-      <div class="top-hero float">
-        <img class="moyan lg top-moyan" src="${CHAR}" alt="モヤンちゃん" />
-      </div>
-      <div class="top-copy">
-        <h1 class="h1">モヤモヤ整理ワーク<br/><span class="h1-sub">家庭も仕事も大切にしたいあなたへ</span></h1>
-        <p class="lead top-lead">仕事と家族を優先しちゃって、<br/>自分は後回しになりがち。<br/>小さなモヤモヤを一緒に整理しませんか？</p>
-        <div class="stack" style="margin-top:18px">
-          <button class="btn primary" id="start">START</button>
+      <div class="top-main">
+        <div class="top-hero float">
+          <img class="moyan lg top-moyan" src="${CHAR}" alt="モヤンちゃん" />
+        </div>
+        <div class="top-copy">
+          <h1 class="h1">モヤモヤ整理ワーク<br/><span class="h1-sub">家庭も仕事も大切にしたいあなたへ</span></h1>
+          <p class="lead top-lead">仕事と家族を優先しちゃって、<br/>自分は後回しになりがち。<br/>小さなモヤモヤを一緒に整理しませんか？</p>
+          <div class="stack" style="margin-top:18px">
+            <button class="btn primary" id="start">START</button>
+          </div>
         </div>
       </div>
-      <p class="footer-note" style="margin-top:auto;padding-top:12px">無料・3分・登録なし</p>
+      <p class="footer-note" style="padding-top:12px">無料・3分・登録なし</p>
     </section>
   `;
   document.getElementById("start").onclick = ()=>{ trackEvent("work_start", true); state.screen="intro"; state.introStep=0; renderIntro(); };
