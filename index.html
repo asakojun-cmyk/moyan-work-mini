@@ -53,6 +53,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
 .h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.02em;line-height:1.55;color:var(--ink)}
+.h1-sub{display:inline-block;margin-top:4px;font-size:14.5px;font-weight:900;color:var(--blue);letter-spacing:.02em}
 .lead{margin:0;font-size:14.5px;font-weight:500;line-height:1.95;color:var(--ink-60)}
 .caption{margin:0;font-size:12px;color:var(--ink-45);line-height:1.6}
 .brandline{margin:6px 0 8px;color:var(--blue);font-weight:800;font-size:16px;letter-spacing:.02em}
@@ -549,7 +550,7 @@ function renderTop(){
         <img class="moyan lg top-moyan" src="${CHAR}" alt="モヤンちゃん" />
       </div>
       <div class="top-copy">
-        <h1 class="h1">モヤモヤ整理ワーク<br/>家庭も仕事も大切にしたいあなたへ</h1>
+        <h1 class="h1">モヤモヤ整理ワーク<br/><span class="h1-sub">家庭も仕事も大切にしたいあなたへ</span></h1>
         <p class="lead top-lead">子どもや家族の予定に振り回されて、いつも自分は後回し。<br/>そんな毎日の「小さなモヤモヤ」、モヤンと一緒にほぐしてみませんか？</p>
         <div class="stack" style="margin-top:18px">
           <button class="btn primary" id="start">モヤンと整理してみる</button>
