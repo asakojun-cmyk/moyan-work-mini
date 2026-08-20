@@ -41,6 +41,8 @@ button{font:inherit;cursor:pointer;color:inherit}
 .hdr-brand{display:flex;align-items:center;gap:8px;min-width:0}
 .hdr-logo{width:28px;height:28px;flex:none;object-fit:contain}
 .hdr-title{margin:0;font-size:12.5px;font-weight:700;color:var(--ink-60);white-space:nowrap}
+.progress-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.progress-text{font-size:11px;font-weight:800;color:var(--ink-45);white-space:nowrap}
 .dots{display:flex;gap:6px}
 .dots i{display:block;width:7px;height:7px;border-radius:999px;background:var(--line)}
 .dots i.on{background:var(--blue);transform:scale(1.25)}
@@ -526,10 +528,19 @@ function transitionTo(renderFn){
 function header(){
   let dotsHtml = "";
   if (state.screen === "q"){
-    dotsHtml = `<div class="dots">` + QUESTIONS.map((_,idx)=>{
+    const current = state.i + 1;
+    const total = QUESTIONS.length;
+    const remaining = total - current;
+    const remainingText = remaining > 0 ? `残り${remaining}問` : "ラストだよ";
+    const dots = QUESTIONS.map((_,idx)=>{
       const cls = idx < state.i ? "done" : (idx === state.i ? "on" : "");
       return `<i class="${cls}"></i>`;
-    }).join("") + `</div>`;
+    }).join("");
+    dotsHtml = `
+    <div class="progress-wrap">
+      <span class="progress-text">${current} / ${total}　${remainingText}</span>
+      <div class="dots">${dots}</div>
+    </div>`;
   }
   return `
   <header class="hdr">
@@ -915,6 +926,26 @@ function joinMoyanList(arr){
   return `${items.slice(0,-1).join("、")}、それから${items[items.length-1]}`;
 }
 
+/* 結果メモで「あなたは〜と答えていたね」と事実を短く言い換えるための短縮ラベル */
+const SHORT_LABEL = {
+  "大きなトラブルはないけれど、毎日ギリギリで限界に近い":"毎日ギリギリで限界に近い",
+  "職場で「すみません」と謝り続けるのがつらい":"謝り続けるのがつらい",
+  "「なんで私ばかり…」と犠牲になっている気がする":"「なんで私ばかり」という気持ち",
+  "心も体もクタクタ。自分の時間や心の余裕がどこにもない":"心も体もクタクタな状態",
+  "周りにも子どもにも「申し訳ない」と思わずにいられる働き方":"罪悪感なく続けられる働き方",
+  "「〇〇ちゃんのママ」をお休みして、自分に戻れる時間":"自分に戻れる時間",
+  "自分の力で稼いでいるという安心感や、将来へのゆとり":"自分で稼ぐ安心感",
+  "仕事を辞めたいわけじゃない。細々とでも社会とつながっていたい":"働き続けたい気持ち",
+  "いまは何も決めずに、まずは心と体をゆっくり休ませたい":"まず休みたい気持ち",
+  "一人でぜんぶの調整や家事を背負い込むこと":"一人で抱え込んでいること",
+};
+function shortLabel(text){ return SHORT_LABEL[text] || text; }
+function shortLabelList(arr){ return (arr || []).filter(Boolean).map(shortLabel); }
+function factFrom(arr, values){
+  const hit = (arr || []).find(v=>values.includes(v));
+  return hit ? shortLabel(hit) : "";
+}
+
 function resultSignals(p){
   return {
     guilt: hasAny(p.struggle, ["職場で「すみません」と謝り続けるのがつらい"]),
@@ -998,45 +1029,63 @@ function buildDeepInsight(p){
   }
 
   if (s.guilt && s.depleted) {
+    const struggleFact = factFrom(p.struggle, ["職場で「すみません」と謝り続けるのがつらい"]);
+    const depletedFact = factFrom(p.struggle, ["心も体もクタクタ。自分の時間や心の余裕がどこにもない"]) || factFrom(p.situation, ["大きなトラブルはないけれど、毎日ギリギリで限界に近い"]);
     return {
-      key:"「すみません」を重ねるほど、休むこと自体に罪悪感が育っちゃう。",
-      body:"心が空っぽになりそうなら、まず手放したいのは「無理な我慢」の方だよ。",
+      key:`あなたは「${struggleFact}」と、「${depletedFact}」の両方を答えていたね。`,
+      body:"もしかすると、謝りながら我慢を重ねること自体が、あなたから休む許可を奪っているのかもしれないよ。\n心が空っぽになりそうなら、まず手放したいのは「無理な我慢」の方だよ。",
       prompt:"最近、いちばん「すみません」を言ったのはどんな場面？"
     };
   }
 
   if (s.unfair && s.valuesGuiltFreeSystem) {
+    const struggleFact = factFrom(p.struggle, ["「なんで私ばかり…」と犠牲になっている気がする"]);
+    const priorityFact = factFrom(p.priority, ["周りにも子どもにも「申し訳ない」と思わずにいられる働き方"]);
     return {
-      key:"自分ばかりが調整役になっている不公平感の裏に、罪悪感なく続けたい気持ちがある。",
-      body:"『なんで私ばかり』という気持ちは、わがままじゃなくて、ずっと1人で調整してきたことへの自然な反応だよ。\n罪悪感なく続けられる仕組みがあれば、その不公平感も少し軽くなるのかもしれないね。",
+      key:`あなたは「${struggleFact}」と、「${priorityFact}」を大事にしたい気持ちの両方を答えていたね。`,
+      body:"もしかすると、今の不公平さが変わらない限り、罪悪感のない働き方も遠く感じてしまうのかもしれないね。\n『なんで私ばかり』は、わがままじゃなくて、ずっと1人で調整してきたことへの自然な反応だよ。",
       prompt:"今の調整の中で、誰かに分けられそうな部分はある？"
     };
   }
 
   if (s.depleted && s.wishRestFirst) {
+    const depletedFact = factFrom(p.struggle, ["心も体もクタクタ。自分の時間や心の余裕がどこにもない"]) || factFrom(p.situation, ["大きなトラブルはないけれど、毎日ギリギリで限界に近い"]);
+    const wishFact = factFrom(p.wish, ["いまは何も決めずに、まずは心と体をゆっくり休ませたい"]);
     return {
-      key:"HPがゼロに近いなら、決める前に、まず休むことが土台になる。",
-      body:"何かを選ぶにも、体力と心の余裕がいるよね。\n今は答えを出すより、少しでもHPを回復させることを優先してもよさそうだよ。",
+      key:`あなたは「${depletedFact}」と、「${wishFact}」の両方を答えていたね。`,
+      body:"もしかすると、次を決める前に、まずエネルギーを取り戻すことの方が本当に必要なのかもしれないよ。\n何かを選ぶにも、体力と心の余裕がいるからね。",
       prompt:"今日、少しだけ休むとしたら何をする？"
     };
   }
 
   if (s.valuesOwnTime && s.releaseAlone) {
+    const priorityFact = factFrom(p.priority, ["「〇〇ちゃんのママ」をお休みして、自分に戻れる時間"]);
+    const releaseFact = factFrom(p.release, ["一人でぜんぶの調整や家事を背負い込むこと"]);
     return {
-      key:"母親という役割から離れられる時間が、1人で抱え込む状況を手放す鍵になりそう。",
-      body:"『〇〇ちゃんのママ』ではなく、1人の自分に戻れる時間があると、抱え込んでいたことを誰かに話す余裕も生まれやすいよ。",
+      key:`あなたは「${priorityFact}」がほしい気持ちと、「${releaseFact}」の両方を答えていたね。`,
+      body:"もしかすると、一人で背負う場面を少し減らせたら、自分に戻れる時間も自然と生まれてくるのかもしれないよ。",
       prompt:"自分だけの時間、最後に持てたのはいつだった？"
     };
   }
 
   if (s.valuesIncome && s.wishKeepConnected) {
+    const priorityFact = factFrom(p.priority, ["自分の力で稼いでいるという安心感や、将来へのゆとり"]);
+    const wishFact = factFrom(p.wish, ["仕事を辞めたいわけじゃない。細々とでも社会とつながっていたい"]);
     return {
-      key:"収入も社会とのつながりも手放したくないから、辞めるという選択が重く感じる。",
-      body:"『辞めればラクになる』と分かっていても、簡単に選べないのは、収入とつながり、どちらも大事な理由があるからだよ。",
+      key:`あなたは「${priorityFact}」と、「${wishFact}」の両方を答えていたね。`,
+      body:"もしかすると、辞めるか続けるかより、その両方を守れる形をまだ見つけられていないだけなのかもしれないよ。",
       prompt:"収入とつながり、今はどちらの気持ちが強い？"
     };
   }
 
+  const facts = shortLabelList([...p.priority, ...p.wish]);
+  if (facts.length) {
+    return {
+      key:`あなたは${joinMoyanList(facts.slice(0, 3))}を大事にしたいと答えていたね。`,
+      body:"もしかすると、そのどれも手放したくないから、簡単には決められずにいるだけなのかもしれないよ。",
+      prompt:"自分の言葉で言うなら、どんな感じかな？"
+    };
+  }
   return {
     key:"辞めるか続けるかより、暮らしの変化があっても大事にしたいものを守れるかを探しているのかも。",
     body:"今の迷いは、正解を選べない弱さではなく、仕事も家族も、どちらも大切にしたいから出ているものにも見えるよ。",
@@ -1139,52 +1188,64 @@ function renderSummary(){
         </div>
       </div>
 
+      <div class="stack" style="margin:16px auto 0">
+        <button class="btn secondary" id="copy">整理メモをコピーする</button>
+      </div>
+
       <div class="mini-chat">
-        <p class="mini-chat-title">次にもう少し見るなら</p>
+        <p class="mini-chat-title">このあとどうする？</p>
+        <div class="optionlist" id="nextChoiceOptions">
+          ${nextChoiceRow("self","もう少し自分で整理する")}
+          ${nextChoiceRow("stop","今日はここまでにしてメモを保存する")}
+          ${nextChoiceRow("talk","誰かと話しながら整理する")}
+        </div>
+      </div>
+
+      <div class="consult-cta" id="panel-self">
+        <p class="mini-chat-title">気になるところをもう少しだけ</p>
         <div class="optionlist" id="miniChatOptions">
           ${Object.entries(MINI_CHAT).map(([key,item])=>miniChatRow(key,item)).join("")}
         </div>
         <div class="replybox mini-chat-reply" id="miniChatReply">
           <span class="who">モヤン：</span>
           <span class="reply-text" id="miniChatText"></span>
-          <div class="stack" style="margin-top:12px">
-            <button class="btn secondary" id="miniChatCopy">整理メモをコピーする</button>
-          </div>
         </div>
       </div>
 
-      <p class="human-section-title">もう少し一緒に気持ちをほぐしたいときだけ</p>
-      <div class="owner-card">
-        <img class="owner-face" src="${OWNER_PHOTO}" alt="" />
-        <div>
-          <p class="owner-label">必要なら、このメモをやさしく受け取ってくれる相手</p>
-          <p class="owner-name">ちゃん｜転勤族妻・3児の母 / キャリコン学習中</p>
-          <p class="owner-text">私自身も、暮らしの変化に合わせて何度も仕事や時間を調整してきました。<br><br>急いで決める前に、今の罪悪感や守りたいものを一緒に整理しています。</p>
-          <p class="owner-handle">${X_HANDLE}</p>
+      <div class="consult-cta" id="panel-stop">
+        <div class="replybox">
+          <span class="who">モヤン：</span>
+          <span class="reply-text">今日はここまでで十分だよ。\nまた気になったときに、このメモを見返してね。</span>
         </div>
       </div>
-      <div class="copybox">
-        <ul class="consult-list">
-          <li>ワークで見えること：いま、自分がどこで立ち止まっているのか。</li>
-          <li>無料セッションで見ること：日常の調整の負担、罪悪感の正体、大切にしたい本音。</li>
-          <li>持ち帰るもの：自分を守るための判断基準と、今日からできる優しい一歩。</li>
-          <li>無料の範囲：30分（オンライン）。今日はメモを見るだけでも大丈夫ですよ。</li>
-        </ul>
+
+      <div class="consult-cta" id="panel-talk">
+        <p class="human-section-title">今回の整理メモを見ながら、30分一緒に整理します</p>
+        <div class="owner-card">
+          <img class="owner-face" src="${OWNER_PHOTO}" alt="" />
+          <div>
+            <p class="owner-label">必要なら、このメモをやさしく受け取ってくれる相手</p>
+            <p class="owner-name">ちゃん｜転勤族妻・3児の母 / キャリコン学習中</p>
+            <p class="owner-text">私自身も、暮らしの変化に合わせて何度も仕事や時間を調整してきました。<br><br>今回の整理メモを見ながら、何に迷っているか・何を大事にしたいか・次に何を考えるとよさそうかを、30分一緒に整理します。<br><br>転職を勧めたり、答えを決めたりする場ではありません。</p>
+            <p class="owner-handle">${X_HANDLE}</p>
+          </div>
+        </div>
+        <div class="stack" style="margin:14px auto 0">
+          <a class="btn secondary link" href="${X_PROFILE_URL}" target="_blank" rel="noopener">Xのプロフィールを見る</a>
+          <a class="btn secondary link" id="xlink" href="${X_DM_URL}" target="_blank" rel="noopener">XのDM作成画面を開く</a>
+        </div>
+        <div class="copybox">
+          ※コピー文には「モヤモヤ整理ワークから来ました。メモを貼りますね。」が入っています。必要な人だけ、DMで送ってみてね。
+        </div>
       </div>
-      <div class="stack" style="margin:14px auto 0">
-        <button class="btn primary" id="copy">整理メモをコピーする</button>
-        <a class="btn secondary link" href="${X_PROFILE_URL}" target="_blank" rel="noopener">Xのプロフィールを見る</a>
-        <a class="btn secondary link" id="xlink" href="${X_DM_URL}" target="_blank" rel="noopener">XのDM作成画面を開く</a>
-      </div>
-      <div class="copybox">
-        ※コピー文には「モヤモヤ整理ワークから来ました。メモを貼りますね。」が入っています。必要な人だけ、DMで送ってみてね。
-      </div>
+
       <p class="footer-note">モヤンはAIです。病気の診断や治療を行うものではありません。</p>
     </section>
   `;
 
   bindSurvey("q-match", (v)=>{ state.survey.memoMatch = v; });
   bindMiniChat();
+  bindNextChoice();
 
   document.getElementById("copy").onclick = ()=>{
     const text = buildResultText();
@@ -1198,11 +1259,32 @@ function renderSummary(){
   armCloudReaction();
 }
 
+function nextChoiceRow(key, label){
+  return `<button class="optrow" data-choice="${escapeAttr(key)}"><span class="ot">${escapeHtml(label)}</span><span class="ock"></span></button>`;
+}
+
+function bindNextChoice(){
+  const wrap = document.getElementById("nextChoiceOptions");
+  if (!wrap) return;
+  const panels = {
+    self: document.getElementById("panel-self"),
+    stop: document.getElementById("panel-stop"),
+    talk: document.getElementById("panel-talk"),
+  };
+  wrap.querySelectorAll("[data-choice]").forEach(btn=>{
+    btn.onclick = ()=>{
+      wrap.querySelectorAll("[data-choice]").forEach(b=>b.classList.remove("on"));
+      btn.classList.add("on");
+      const key = btn.dataset.choice;
+      Object.entries(panels).forEach(([k,el])=>{ if (el) el.classList.toggle("open", k===key); });
+    };
+  });
+}
+
 function bindMiniChat(){
   const wrap = document.getElementById("miniChatOptions");
   const reply = document.getElementById("miniChatReply");
   const text = document.getElementById("miniChatText");
-  const copyBtn = document.getElementById("miniChatCopy");
   if (!wrap || !reply || !text) return;
   wrap.querySelectorAll("[data-chat]").forEach(btn=>{
     btn.onclick = ()=>{
@@ -1221,13 +1303,6 @@ function bindMiniChat(){
       }
     };
   });
-  if (copyBtn) {
-    copyBtn.onclick = ()=>{
-      copyToClipboard(buildResultText());
-      trackEvent("memo_copy");
-      showToast("整理メモをコピーしました");
-    };
-  }
 }
 
 function bindSurvey(containerId, onPick){
