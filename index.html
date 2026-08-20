@@ -61,7 +61,7 @@ button{font:inherit;cursor:pointer;color:inherit}
   line-height:1.75;letter-spacing:.02em}
 .badge-tap span{background:linear-gradient(transparent 20%,rgba(255,255,255,.94) 20%);
   padding:0 4px}
-.top-lead{max-width:270px;margin-top:2px;font-size:13.5px;line-height:1.9}
+.top-lead{max-width:270px;margin-top:2px;font-size:12px;line-height:1.85}
 .screen.top-screen{position:relative;justify-content:center;align-items:center;text-align:center;padding-top:10px}
 .top-hero{position:relative;width:100%;height:clamp(118px,25svh,170px);margin:0 0 10px;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;z-index:0}
 .top-hero .top-moyan{width:clamp(104px,32vw,136px);margin:0 auto}
@@ -72,7 +72,7 @@ button{font:inherit;cursor:pointer;color:inherit}
   .top-hero .top-moyan{width:108px}
   .top-copy .h1{font-size:20px}
   .top-copy .badge-tap{margin:6px 0 8px}
-  .top-copy .top-lead{font-size:13px;line-height:1.8}
+  .top-copy .top-lead{font-size:11.5px;line-height:1.75}
 }
 .intro-screen{padding-top:8px;justify-content:center}
 .intro-list{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
@@ -551,12 +551,12 @@ function renderTop(){
       </div>
       <div class="top-copy">
         <h1 class="h1">モヤモヤ整理ワーク<br/><span class="h1-sub">家庭も仕事も大切にしたいあなたへ</span></h1>
-        <p class="lead top-lead">仕事と家族を優先しちゃって、自分は後回しになりがち。<br/>小さなモヤモヤを一緒に整理しませんか？</p>
+        <p class="lead top-lead">仕事と家族を優先しちゃって、<br/>自分は後回しになりがち。<br/>小さなモヤモヤを一緒に整理しませんか？</p>
         <div class="stack" style="margin-top:18px">
           <button class="btn primary" id="start">START</button>
         </div>
-        <p class="caption" style="margin-top:12px">無料・そのまま始められます</p>
       </div>
+      <p class="footer-note" style="margin-top:auto;padding-top:12px">無料・3分・登録なし</p>
     </section>
   `;
   document.getElementById("start").onclick = ()=>{ trackEvent("work_start", true); state.screen="intro"; state.introStep=0; renderIntro(); };
