@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>モヤンちゃん 3分働き方整理ワーク</title>
+<meta name="description" content="設問は短く、結果は深く。暮らしの変化や突発事態のたびに、自分の仕事や時間を調整してきた人が、今の迷いと罪悪感を少し言葉にする3分ワークです。" />
+<meta name="robots" content="index,follow" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="モヤンちゃん 3分働き方整理ワーク" />
+<meta property="og:title" content="モヤンちゃん 3分働き方整理ワーク" />
+<meta property="og:description" content="子どもの発熱や急な予定変更のたびに、自分の仕事や時間を調整してきた人へ。今の迷いと罪悪感を少し言葉にする3分ワーク。" />
+<meta property="og:url" content="https://asakojun-cmyk.github.io/moyan-work-mini/" />
+<meta property="og:image" content="https://asakojun-cmyk.github.io/moyan-work-mini/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="モヤンちゃん 3分働き方整理ワーク" />
+<meta name="twitter:description" content="子どもの発熱や急な予定変更のたびに、自分の仕事や時間を調整してきた人へ。今の迷いと罪悪感を少し言葉にする3分ワーク。" />
+<meta name="twitter:image" content="https://asakojun-cmyk.github.io/moyan-work-mini/og.png" />
+<style>
+:root{
+  --cream:#fffdf2; --sky:#e8f5ff; --ink:#000030;
+  --blue:#5b6b8c; --white:#fff; --ink-60:rgba(0,0,48,.6); --ink-45:rgba(0,0,48,.4);
+  --line:rgba(91,107,140,.16); --button-line:rgba(91,107,140,.36);
+  --soft-shadow:0 10px 28px rgba(91,107,140,.1);
+  --font-round:"Zen Maru Gothic","Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN W4",sans-serif;
+  --font-sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1); --maxw:430px; --tap:44px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{background:#e9edf3}
+body{margin:0;color:var(--ink);font-family:var(--font-round);line-height:1.7;background:#e9edf3}
+button{font:inherit;cursor:pointer;color:inherit}
+.app{position:relative;width:100%;max-width:var(--maxw);margin:0 auto;min-height:100svh;min-height:100dvh;
+  background:linear-gradient(180deg,var(--sky) 0%,#eef8ff 30%,var(--cream) 55%);overflow:hidden;display:flex;flex-direction:column}
+@media (min-width:640px){.app{margin:18px auto;min-height:min(880px,calc(100dvh - 36px));border-radius:30px;box-shadow:0 0 60px rgba(20,40,70,.12)}}
+
+.hdr{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px}
+.hdr-brand{display:flex;align-items:center;gap:8px;min-width:0}
+.hdr-logo{width:28px;height:28px;flex:none;object-fit:contain}
+.hdr-title{margin:0;font-size:12.5px;font-weight:700;color:var(--ink-60);white-space:nowrap}
+.dots{display:flex;gap:6px}
+.dots i{display:block;width:7px;height:7px;border-radius:999px;background:var(--line)}
+.dots i.on{background:var(--blue);transform:scale(1.25)}
+.dots i.done{background:#bcd9c6}
+
+.screen{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:6px 22px 22px;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;animation:fadeIn .22s var(--ease)}
+.screen.is-leaving{opacity:0;transform:translateY(-6px);transition:opacity .18s var(--ease),transform .18s var(--ease)}
+.screen.center{justify-content:center;text-align:center;align-items:center}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.02em;line-height:1.55;color:var(--ink)}
+.lead{margin:0;font-size:14.5px;font-weight:500;line-height:1.95;color:var(--ink-60)}
+.caption{margin:0;font-size:12px;color:var(--ink-45);line-height:1.6}
+.brandline{margin:6px 0 8px;color:var(--blue);font-weight:800;font-size:16px;letter-spacing:.02em}
+.badge-tap{display:inline-block;margin:8px 0 10px;color:var(--blue);font-weight:900;font-size:14.5px;
+  line-height:1.75;letter-spacing:.02em}
+.badge-tap span{background:linear-gradient(transparent 20%,rgba(255,255,255,.94) 20%);
+  padding:0 4px}
+.top-lead{max-width:270px;margin-top:2px;font-size:13.5px;line-height:1.9}
+.screen.top-screen{position:relative;justify-content:center;align-items:center;text-align:center;padding-top:10px}
+.top-hero{position:relative;width:100%;height:clamp(118px,25svh,170px);margin:0 0 10px;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;z-index:0}
+.top-hero .top-moyan{width:clamp(104px,32vw,136px);margin:0 auto}
+.top-copy{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+@media (max-height:620px){
+  .screen.top-screen{justify-content:flex-start;padding-top:8px}
+  .top-hero{height:118px;margin-bottom:6px}
+  .top-hero .top-moyan{width:108px}
+  .top-copy .h1{font-size:20px}
+  .top-copy .badge-tap{margin:6px 0 8px}
+  .top-copy .top-lead{font-size:13px;line-height:1.8}
+}
+.intro-screen{padding-top:8px;justify-content:center}
+.intro-list{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
+.intro-item{background:rgba(255,255,255,.82);border-radius:18px;padding:13px 15px;box-shadow:var(--soft-shadow)}
+.intro-label{margin:0 0 4px;color:var(--blue);font-size:12px;font-weight:800}
+.intro-text{margin:0;color:var(--ink);font-size:14px;font-weight:700;line-height:1.75}
+.intro-note{margin:0 0 14px;color:var(--ink-60);font-size:12.5px;line-height:1.75;text-align:center}
+.intro-progress{margin:0 0 12px;text-align:center;color:var(--ink-45);font-size:12px;font-weight:700;line-height:1.5}
+.intro-actions{margin-top:6px}
+
+.moyan{display:block;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.moyan.lg{width:min(42vw,160px)}
+.moyan.md{width:84px}
+.float{animation:moyanAlive 9s ease-in-out infinite}
+@keyframes moyanAlive{0%{transform:translateY(0)}35%{transform:translateY(-4px)}60%,100%{transform:translateY(0)}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;
+  padding:12px 18px;border:none;border-radius:999px;background:var(--white);color:var(--ink);
+  font-family:var(--font-round);font-size:15.5px;font-weight:700;letter-spacing:.02em;
+  box-shadow:0 8px 24px rgba(91,107,140,.12);
+  transition:transform .15s var(--ease),background .15s var(--ease),opacity .15s var(--ease),box-shadow .15s var(--ease)}
+.btn:active{transform:scale(.97);background:var(--sky)}
+.btn.primary{font-weight:800}
+.btn:disabled{background:#ececdf;color:#a9a79a;opacity:1;pointer-events:none;box-shadow:none}
+.btn .arrow{transition:transform .15s var(--ease)}
+.btn:not(:disabled) .arrow{transform:translateX(0)}
+.hint-select{text-align:center;font-size:12.5px;color:var(--blue);font-weight:700;margin:0 0 6px;
+  transition:opacity .2s var(--ease)}
+.btn.ghost{border:none;background:transparent;box-shadow:none;color:var(--ink-45);min-height:auto;font-size:13px;width:auto;padding:8px}
+.btn.link{text-decoration:none}
+.btn.secondary{background:#f5fbff}
+.stack{display:flex;flex-direction:column;gap:12px;width:100%;max-width:280px;margin:0 auto}
+
+/* --- 質問画面 --- */
+.qtop{display:flex;flex-direction:column;align-items:center;margin-bottom:2px}
+.replybox{align-self:stretch;box-shadow:var(--soft-shadow);border-radius:20px;
+  background:var(--white);padding:16px 18px;color:var(--ink);position:relative;margin:10px 0 14px;
+  transition:opacity .15s ease,background .2s ease,box-shadow .2s ease,transform .2s ease}
+.replybox::before{content:"";position:absolute;top:-8px;left:50%;width:18px;height:18px;
+  background:inherit;border-radius:4px;transform:translateX(-50%) rotate(45deg);
+  box-shadow:-4px -4px 12px rgba(91,107,140,.04);z-index:0}
+.replybox .who,.replybox .reply-text{position:relative;z-index:1}
+.replybox.ack-active{animation:ackBubble 1.2s var(--ease)}
+@keyframes ackBubble{0%{background:var(--white);box-shadow:var(--soft-shadow)}
+  35%{background:var(--white);box-shadow:0 8px 22px rgba(91,107,140,.16)}
+  100%{background:var(--white);box-shadow:var(--soft-shadow)}}
+.replybox .who{color:var(--blue);font-weight:800;display:block;margin-bottom:4px;font-size:12.5px}
+.reply-text{display:block;white-space:pre-line;font-size:15px;line-height:1.85}
+.choice-rule{align-self:center;margin:0 0 10px;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.82);
+  color:var(--blue);font-size:12.5px;font-weight:800;line-height:1.5;box-shadow:0 4px 14px rgba(91,107,140,.07)}
+
+@keyframes moyanNod{0%{transform:translateY(0) rotate(0)}22%{transform:translateY(7px) rotate(-7deg)}
+  45%{transform:translateY(-1px) rotate(2deg)}68%{transform:translateY(5px) rotate(-4deg)}
+  86%{transform:translateY(0) rotate(1deg)}100%{transform:translateY(0) rotate(0)}}
+.moyan.nodding{animation:moyanNod 1.3s ease-in-out}
+@keyframes moyanWiggle{0%,100%{transform:rotate(0)}30%{transform:rotate(-4deg)}70%{transform:rotate(4deg)}}
+.moyan.wiggling{animation:moyanWiggle 1s ease-in-out}
+
+.chipgrid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.chip{border:none;border-radius:999px;background:var(--white);color:var(--ink);
+  font-family:var(--font-round);font-size:13.5px;font-weight:700;padding:9px 14px;line-height:1.3;
+  box-shadow:0 6px 18px rgba(91,107,140,.09);
+  transition:transform .12s var(--ease),background .12s var(--ease),color .12s var(--ease),box-shadow .12s var(--ease)}
+.chip:active{transform:scale(.96)}
+.chip.on{background:var(--blue);color:#fff}
+.chip.other{color:var(--ink-60)}
+
+.optionlist{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+.optrow{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:9px 14px;
+  border:none;border-radius:14px;background:var(--white);color:var(--ink);
+  font-family:var(--font-round);font-size:14.5px;font-weight:700;text-align:left;
+  box-shadow:0 7px 20px rgba(91,107,140,.1);
+  transition:transform .12s var(--ease),background .12s var(--ease),color .12s var(--ease),box-shadow .12s var(--ease)}
+.optrow:active{transform:scale(.98)}
+.optrow .ot{flex:1;line-height:1.4}
+.optrow .ock{flex:none;width:18px;height:18px;border-radius:999px;border:1px solid var(--button-line);position:relative}
+.optrow.on{background:#f2f8ff;color:var(--ink);box-shadow:0 10px 24px rgba(91,107,140,.16)}
+.optrow.on .ock{background:var(--blue);border-color:var(--blue)}
+.optrow.on .ock::after{content:"";position:absolute;inset:5px;border-radius:999px;background:#fff}
+.optrow.other{color:var(--ink-60)}
+
+.freewrap{margin-top:8px;max-height:0;overflow:hidden;transition:max-height .25s var(--ease)}
+.freewrap.open{max-height:160px}
+textarea.answer{width:100%;min-height:80px;border:1px solid var(--line);border-radius:16px;padding:12px 14px;
+  font-family:var(--font-sans);font-size:15px;line-height:1.7;color:var(--ink);resize:vertical;background:var(--white);
+  box-shadow:0 1px 3px rgba(0,0,0,.06);margin-top:8px}
+textarea.answer:focus{outline:2.5px solid var(--blue);outline-offset:1px}
+textarea.answer::placeholder{color:var(--ink-45)}
+@media (max-width:480px){
+  .freewrap.open{max-height:260px}
+  textarea.answer{min-height:150px;font-size:16px;line-height:1.75}
+}
+
+.composer{margin-top:auto;display:flex;flex-direction:column;gap:10px;padding-top:12px}
+.chips-disabled{opacity:.45;pointer-events:none}
+.ack-screen{justify-content:flex-start;padding-top:8px}
+
+/* --- 整理メモ画面 --- */
+.diagnosis{margin-bottom:10px;text-align:center}
+.diagnosis-text{font-size:15.5px;line-height:2.05}
+.detail-toggle{align-self:center;margin:2px auto 12px;color:var(--blue);font-weight:800;font-size:13px}
+.detail-wrap{display:none}
+.detail-wrap.open{display:block}
+.answer-state{display:inline-flex;align-items:center;justify-content:center;margin:0 auto 12px;padding:6px 14px;
+  border-radius:999px;background:rgba(255,255,255,.86);color:var(--blue);font-size:12.5px;font-weight:900;
+  box-shadow:0 4px 14px rgba(91,107,140,.07)}
+
+.directioncard{text-align:center;margin-bottom:14px}
+.direction-text{font-size:21px;font-weight:800;color:var(--ink);background:var(--sky);
+  border:none;border-radius:16px;padding:14px;margin:4px 0 0;box-shadow:var(--soft-shadow)}
+
+.memo-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.memocard{border:none;border-radius:18px;background:rgba(255,255,255,.86);padding:14px 16px;
+  box-shadow:var(--soft-shadow)}
+.memo-text{font-size:14.5px;font-weight:700;line-height:1.85;margin:0;color:var(--ink);white-space:pre-line}
+.memo-summary{text-align:left}
+.moyan-memo{display:flex;flex-direction:column;gap:12px;margin-top:2px}
+.result-main{display:flex;flex-direction:column;gap:10px;margin:0 0 14px}
+.result-block{border:none;border-radius:18px;background:rgba(255,255,255,.88);padding:14px 16px;
+  box-shadow:var(--soft-shadow);text-align:left}
+.result-block.core{background:#f2f8ff}
+.result-block.reflect{background:rgba(255,253,242,.9)}
+.result-heading{margin:0 0 6px;color:var(--blue);font-size:12.5px;font-weight:900;line-height:1.55}
+.result-body{margin:0;color:var(--ink);font-size:14.5px;font-weight:800;line-height:1.85;white-space:pre-line}
+.result-key{display:block;margin:3px 0 8px;padding-left:10px;border-left:4px solid var(--blue);
+  color:var(--ink);font-size:17px;font-weight:900;line-height:1.7;white-space:pre-line}
+.memo-section{display:flex;flex-direction:column;gap:3px}
+.memo-heading{margin:0;color:var(--blue);font-size:12.5px;font-weight:900;line-height:1.55}
+.memo-line{margin:0;color:var(--ink);font-size:15px;font-weight:800;line-height:1.85;white-space:pre-line}
+.memo-talk{margin:0;color:var(--ink);font-size:15px;font-weight:800;line-height:1.95;white-space:pre-line}
+.memo-talk.note{color:var(--ink-60);font-size:13px;font-weight:700;line-height:1.75}
+.human-section-title{margin:18px 0 10px;text-align:center;color:var(--ink);font-size:15px;font-weight:900;line-height:1.7}
+.consult-list{margin:0 0 12px;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.consult-list li{font-size:12.5px;color:var(--ink-60);font-weight:700;line-height:1.65}
+.mini-chat{margin:14px 0 16px}
+.mini-chat-title{margin:0 0 10px;text-align:center;color:var(--ink);font-size:14.5px;font-weight:900;line-height:1.7}
+.mini-chat-reply{display:none;text-align:left;margin-top:14px}
+.mini-chat-reply.open{display:block}
+.mini-chat-reply .stack{max-width:300px}
+
+.resultbox{border:none;border-radius:18px;background:rgba(255,255,255,.86);padding:16px 16px 10px;margin-bottom:14px;
+  box-shadow:var(--soft-shadow)}
+.reslabel{font-size:12px;font-weight:800;color:var(--ink-45);margin:0 0 7px;letter-spacing:.02em}
+.tagrow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{display:inline-block;border:none;border-radius:999px;padding:6px 12px;font-size:13px;
+  font-weight:700;background:var(--white);color:var(--ink);line-height:1.3}
+.tag.keep{background:#edf7ef;color:#2f6b46}
+.tag.release{background:#fff3e5;color:#8a5a24}
+.tag.criteria{background:#eff4fb;color:var(--blue)}
+.tag.next{background:#eef3ff;color:var(--ink);font-weight:800}
+
+.sumcard{border:none;border-radius:18px;background:rgba(255,255,255,.86);padding:14px 16px;margin-bottom:10px;
+  box-shadow:var(--soft-shadow)}
+.sumcard .num{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--blue);
+  border-radius:999px;padding:2px 10px;margin-bottom:6px}
+.sumcard .qtext{font-size:12px;color:var(--ink-45);margin:0 0 4px;font-weight:700}
+.sumcard .atext{font-size:14.5px;color:var(--ink);white-space:pre-line;margin:0;line-height:1.8}
+
+.survey-q{border:none;border-radius:16px;background:rgba(255,255,255,.86);padding:14px;margin-bottom:10px;
+  box-shadow:var(--soft-shadow)}
+.survey-q p{margin:0 0 10px;font-weight:700;font-size:14px}
+.survey-row{display:flex;gap:8px;flex-wrap:wrap}
+.survey-btn{font-family:var(--font-round);font-size:13px;font-weight:700;color:var(--ink);background:var(--white);
+  border:none;border-radius:999px;padding:8px 15px;box-shadow:0 6px 18px rgba(91,107,140,.09)}
+.survey-btn.on{background:var(--blue);color:#fff}
+.consult-cta{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.consult-cta.open{display:block}
+.consult-cta-text{margin:0 0 10px;color:var(--ink-60);font-size:13px;font-weight:700;line-height:1.75;text-align:left;white-space:pre-line}
+
+.copybox{border:none;border-radius:14px;background:rgba(255,255,255,.64);padding:12px 14px;margin:14px 0;
+  font-size:12px;color:var(--ink-60);line-height:1.7;box-shadow:0 4px 16px rgba(91,107,140,.07)}
+.owner-card{display:flex;gap:12px;align-items:center;border:none;border-radius:18px;background:rgba(255,255,255,.86);
+  padding:14px 15px;margin:14px 0 12px;box-shadow:var(--soft-shadow);text-align:left}
+.owner-face{width:62px;height:62px;object-fit:cover;flex:none;border-radius:999px;background:#fff;box-shadow:0 6px 18px rgba(91,107,140,.12)}
+.owner-label{margin:0 0 2px;font-size:11.5px;color:var(--ink-45);font-weight:800}
+.owner-name{margin:0 0 4px;font-size:14px;color:var(--ink);font-weight:900;line-height:1.45}
+.owner-text{margin:0;font-size:12px;color:var(--ink-60);line-height:1.65}
+.owner-handle{margin:5px 0 0;font-size:12px;color:var(--blue);font-weight:900}
+.footer-note{font-size:11px;color:var(--ink-45);text-align:center;line-height:1.6;padding:4px 8px 0}
+.sorting-message{min-height:246px;margin:12px 0 0;color:var(--blue);font-size:15px;font-weight:700;line-height:1.95;white-space:pre-line;text-align:center}
+.sorting-message::after{content:"";display:inline-block;width:2px;height:1.15em;margin-left:3px;vertical-align:-.18em;background:var(--blue);animation:caretBlink .85s steps(1) infinite}
+.sorting-message.done::after{display:none}
+@keyframes caretBlink{0%,48%{opacity:1}49%,100%{opacity:0}}
+.sorting-screen{position:relative}
+.final-phrase{position:relative;display:block;width:max-content;max-width:100%;margin:0 auto;font-weight:800}
+.phrase-sparkle-field{position:absolute;left:50%;top:50%;z-index:2;width:340px;height:240px;transform:translate(-50%,-50%);pointer-events:none;overflow:visible}
+.sparkle{position:absolute;left:50%;top:50%;display:inline-flex;align-items:center;justify-content:center;
+  width:var(--size);height:var(--size);color:#fff;font-family:var(--font-sans);font-size:var(--size);
+  font-weight:400;line-height:1;opacity:0;text-shadow:0 0 3px rgba(255,255,255,1),0 0 10px rgba(255,232,170,.92),0 0 18px rgba(255,255,255,.72);
+  filter:drop-shadow(0 0 7px rgba(255,235,185,.7));transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(.2) rotate(0);
+  animation:sparkleFall 2.8s cubic-bezier(.17,.76,.22,1) forwards}
+@keyframes sparkleFall{
+  0%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(.32) rotate(0)}
+  10%{opacity:1;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(1.34) rotate(0)}
+  28%{opacity:1;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1) rotate(var(--rot))}
+  72%{opacity:.9;transform:translate(calc(-50% + var(--fall-x)),calc(-50% + var(--fall-y))) scale(.86) rotate(calc(var(--rot) + 58deg))}
+  100%{opacity:0;transform:translate(calc(-50% + var(--fall-x)),calc(-50% + var(--fall-y) + 82px)) scale(.68) rotate(calc(var(--rot) + 106deg))}
+}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;
+  padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700;box-shadow:0 6px 20px rgba(0,0,48,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;z-index:50}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+/* ==== モヤンちゃんの見た目・動き（スタンプは使わず、本人の表情・動きで「聞いてるよ」を伝える） ==== */
+const CHAR = "assets/moyan_23.png";
+const BLINK = "assets/moyan_blink.png";
+const OWNER_PHOTO = "assets/chan_profile.png";
+const TITLE = "モヤンちゃん 3分働き方整理ワーク";
+const X_HANDLE = "@chan_tentenlife";
+const X_DM_URL = "https://x.com/messages/compose?recipient_id=2055011649640407040";
+const X_PROFILE_URL = "https://x.com/chan_tentenlife";
+const SORTING_MESSAGE = `答えを急いで出さなくてもいいよ。
+
+選んだ言葉の組み合わせから、
+持ち帰るメモをつくってみるね。
+
+最後に、
+「あなたはどう感じる？」
+と返すよ。`;
+const INTRO_MESSAGES = [
+  "こんにちは。モヤンだよ。\n\n今日は来てくれてありがとう。\n\nこのワークは、今すぐ答えを出す診断ではないよ。\n\n子どもの発熱、急な用事、家族の予定。\n何かあるたびに、自分の仕事や時間を調整してきたんじゃないかな。\n\nそんな迷いや罪悪感を、少しだけ整理するワークです。",
+  "質問は7つ。だいたい3分で終わるよ。\n\n近いものを選ぶだけで大丈夫。\n\n「まだ分からない」も選べるから、無理に答えを出さなくていいよ。",
+  "最後に、整理メモをつくるね。\n\n回答の一覧ではなく、持ち帰るメモと次に見ることを返すよ。\n\n近いかどうか、あなたの感じ方で見てみてね。",
+];
+/* 相槌の時に、本体をこかっと動かす。nod=うなずき／wiggle=ちいさく揺れる、をバリエーションで */
+const REACTION = { nod:"nodding", great:"wiggling", doingBest:"nodding" };
+
+const MINI_CHAT = {
+  think: {
+    label:"この整理をどう見たらいい？",
+    reply:"まずは「近いところ」と「少し違うところ」を分けて見てもよさそう。\n\n全部がぴったりじゃなくてもいいよ。\n違うと感じたところに、別の本音が残っていることもあるからね。"
+  },
+  consult: {
+    label:"罪悪感のことから整理したい",
+    reply:"罪悪感は、あなたが手を抜いているからじゃなく、頑張りすぎているサインのことが多いよ。\n\n『申し訳ない』と思う場面を一つ書き出すと、本当は誰に何を頼みたいのかが見えてくることがあるよ。"
+  },
+  first: {
+    label:"1人で抱えていることを整理したい",
+    reply:"全部を一気に手放さなくていいよ。\n\n家事、送迎、急な対応、心配ごと。\nどれか一つだけ、誰かに「手伝って」と言えそうなものを見つけてみよう。"
+  },
+  more: {
+    label:"今日はここまでにしたい",
+    reply:"うん、今日はここまでにしよう。\n\n考えるのにも体力を使うから、止まると決めることも大事だよ。\n\n必要になったら、またこのメモを見ればいいからね。"
+  }
+};
+
+/* ==== 質問データ：暮らしの変化・突発事態で、自分の仕事や時間が調整弁になっている人の迷いを7つに分けて見る ==== */
+/* 選択肢ごとに専用の相槌(aizuchi)を持たせ、選んだ言葉に対して個別に返す */
+const QUESTIONS = [
+  {
+    key:"situation", q:"いまの「暮らしと仕事」の状況は？", multi:false,
+    chips:[
+      "子どもの突発的な発熱や通院が多く、仕事や予定が崩れやすい",
+      "夫の仕事優先で、急な育児や家事のしわ寄せが常に自分にくる",
+      "働き方（パート・在宅など）を変えたけれど、結局しんどさが変わらない",
+      "大きな出来事はないけれど、日々の積み重ねで心身が限界に近い",
+    ],
+    exclusive:[],
+    ph:"近い状況がなければ、ここに書いてね",
+    aizuchi:{
+      "子どもの突発的な発熱や通院が多く、仕事や予定が崩れやすい":"急な熱や体調不良…そのたびに仕事や予定を組み直すの、本当に頭も体も使うよね。",
+      "夫の仕事優先で、急な育児や家事のしわ寄せが常に自分にくる":"『明日は休めないから』の一言で、全部こちらが調整する前提になるの、やるせないよね。",
+      "働き方（パート・在宅など）を変えたけれど、結局しんどさが変わらない":"時間に融通が利くはずの働き方にしても、突発対応があると結局パンクしちゃうよね。",
+      "大きな出来事はないけれど、日々の積み重ねで心身が限界に近い":"毎日必死に回しているだけでHPが削られていくよね。限界を感じるのも無理はないよ。",
+    }, stamp:"nod"
+  },
+  {
+    key:"struggle", q:"いま、一番「モヤッ」「限界」と感じているところは？", multi:false,
+    chips:[
+      "急な休みで職場や顧客に「すみません」と謝り続けるのが精神的につらい",
+      "突発対応で自分の予定や仕事ばかり犠牲になり、不公平さを感じる",
+      "「こんなに無理して私が働く意味ってあるのかな？」と分からなくなる",
+      "家事・育児・仕事でHPがゼロになり、自分の時間や休息が全くない",
+      "今は特に強いモヤモヤや限界は感じていない・よく分からない",
+    ],
+    exclusive:["今は特に強いモヤモヤや限界は感じていない・よく分からない"],
+    ph:"近い言葉がなければ、ここに書いてね",
+    aizuchi:{
+      "急な休みで職場や顧客に「すみません」と謝り続けるのが精神的につらい":"悪くないのに謝り続けるのって、胸がキュッとなるよね。罪悪感でいっぱいになる気持ち、痛いほどわかるよ。",
+      "突発対応で自分の予定や仕事ばかり犠牲になり、不公平さを感じる":"『なんで私ばかり諦めなきゃいけないの？』って思ってしまう自分を責めなくて大丈夫。当然の感情だよ。",
+      "「こんなに無理して私が働く意味ってあるのかな？」と分からなくなる":"がんばればがんばるほど空回りする気がして、働く理由を見失いそうになること、あるよね。",
+      "家事・育児・仕事でHPがゼロになり、自分の時間や休息が全くない":"朝から夜まで誰かのために動き続けていたら、そりゃあ心も体もクタクタになっちゃうよ。",
+      "今は特に強いモヤモヤや限界は感じていない・よく分からない":"今は大きな問題がなくて何より！無理に理由を探さなくても大丈夫だからね。",
+    }, stamp:"nod"
+  },
+  {
+    key:"priority", q:"守りたいもの・本当は大切にしたい優先順位は？", multi:true,
+    chips:[
+      "子どもの健康や家族との時間を第一にすること",
+      "突発的なことがあっても「罪悪感なく」続けられる仕組み・働き方",
+      "家族や母親という役割から離れられる「自分だけの時間・役割」",
+      "毎月の収入や家計の安心感",
+    ],
+    exclusive:[],
+    ph:"他にもあれば、ここに書いてね",
+    aizuchi:{
+      "子どもの健康や家族との時間を第一にすること":"やっぱり一番は家族の笑顔と安心だよね。",
+      "突発的なことがあっても「罪悪感なく」続けられる仕組み・働き方":"誰にも無理な謝罪をせず、安心して働ける環境ってすごく大事。",
+      "家族や母親という役割から離れられる「自分だけの時間・役割」":"『〇〇ちゃんのママ』じゃなく、1人の人間として息を抜ける時間は絶対に必要だよ。",
+      "毎月の収入や家計の安心感":"自分の手で収入を得ている安心感は、心の支えになるよね。",
+    }, stamp:"great"
+  },
+  {
+    key:"wish", q:"いまの気持ちに一番近い選択は？", multi:false,
+    chips:[
+      "細々とでも、自分らしく社会とつながって働き続けたい",
+      "一度今のパンク状態を解消して、暮らしと働き方を組み直したい",
+      "まずは無理に決めず、自分の心身を休めることを最優先にしたい",
+      "どうしたいのか、どうすればいいのか自分でも迷子になっている",
+    ],
+    exclusive:[],
+    ph:"しっくりくる言葉がなければ、ここに書いてね",
+    aizuchi:{
+      "細々とでも、自分らしく社会とつながって働き続けたい":"社会とのつながりを諦めたくない気持ち、すごくステキだよ。",
+      "一度今のパンク状態を解消して、暮らしと働き方を組み直したい":"今のまま走り続けるより、一度立ち止まってリセットしたいよね。",
+      "まずは無理に決めず、自分の心身を休めることを最優先にしたい":"そうそう！まずは擦り減ったエネルギーを溜めるのが一番だよ。",
+      "どうしたいのか、どうすればいいのか自分でも迷子になっている":"選択肢が多すぎたり制約が多かったりすると、迷子になるのは当たり前だよ。",
+    }, stamp:"nod"
+  },
+  {
+    key:"release", q:"今すぐ少しだけ手放したい・減らしたいものは？", multi:true,
+    chips:[
+      "「休んで申し訳ない」「しっかりやらなきゃ」という罪悪感・プレッシャー",
+      "1人で突発対応や悩みを抱え込む状況",
+      "周りやSNSと比べて「できていない自分」を責める時間",
+    ],
+    exclusive:[],
+    ph:"他にもあれば、ここに書いてね",
+    aizuchi:{
+      "「休んで申し訳ない」「しっかりやらなきゃ」という罪悪感・プレッシャー":"その重いプレッシャー、少しずつ降ろしていこうね。",
+      "1人で突発対応や悩みを抱え込む状況":"自分1人で抱え込むのはもう終わりにしていいんだよ。",
+      "周りやSNSと比べて「できていない自分」を責める時間":"他の誰かと比べる必要なんて全くなし！あなたは十分やってるよ。",
+    }, stamp:"great"
+  },
+  {
+    key:"criteria", q:"これから働き方や暮らしを選ぶときに「譲れない基準」は？", multi:true,
+    chips:[
+      "子どもの体調変化や突発事態が起きても、破綻しない余白があるか",
+      "自分だけが我慢するのではなく、家族や周囲と分担できているか",
+      "自分の体力やメンタルを壊さないペースで続けられるか",
+    ],
+    exclusive:[],
+    ph:"他にもあれば、ここに書いてね",
+    aizuchi:{
+      "子どもの体調変化や突発事態が起きても、破綻しない余白があるか":"『ギリギリのスケジュール』を卒業して、余白を持つのは生きる上で超重要！",
+      "自分だけが我慢するのではなく、家族や周囲と分担できているか":"あなた1人の犠牲の上に成り立つ平和は、本物の平和じゃないもんね。",
+      "自分の体力やメンタルを壊さないペースで続けられるか":"あなたの心と体の健康が、全ての土台だからね。",
+    }, stamp:"nod"
+  },
+  {
+    key:"step", q:"今日からできる、ほんの小さな一歩は？", multi:false,
+    chips:[
+      "いま抱えている「モヤモヤ」や「しんどさ」を文字にして吐き出してみる",
+      "今の働き方で「減らせる負荷」がないか整理してみる",
+      "今日は何も決めず、とりあえず温かいお茶でも飲んで休む",
+    ],
+    exclusive:[],
+    ph:"他にあれば、ここに書いてね",
+    aizuchi:{
+      "いま抱えている「モヤモヤ」や「しんどさ」を文字にして吐き出してみる":"言葉にして外に出すだけでも、頭の中がすっきり整理されるよ！",
+      "今の働き方で「減らせる負荷」がないか整理してみる":"足し算じゃなく『引き算』から考えるの、すごく良い一歩だね！",
+      "今日は何も決めず、とりあえず温かいお茶でも飲んで休む":"大正解！今日はゆっくりお茶でも飲んで、自分をいっぱい甘やかそうね。",
+    }, stamp:"great"
+  },
+];
+
+const OTHER = "そのほか（自由に書く）";
+const state = { screen:"top", introStep:0, i:0, answers:{}, freeOpen:{}, freeText:{}, survey:{ memoMatch:null }, tracked:{} };
+const TRACKABLE_EVENTS = new Set(["work_start","questions_complete","memo_view","memo_copy","dm_click"]);
+
+function root(){ return document.getElementById("app"); }
+function trackEvent(name, once=false){
+  if (!TRACKABLE_EVENTS.has(name)) return;
+  if (once && state.tracked[name]) return;
+  state.tracked[name] = true;
+  try {
+    window.dispatchEvent(new CustomEvent("moyan:analytics", { detail:{ name } }));
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event:`moyan_${name}` });
+    if (typeof window.gtag === "function") window.gtag("event", `moyan_${name}`);
+    const url = `/api/moyan-event/${encodeURIComponent(name)}`;
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(url, new Blob([], { type:"text/plain" }));
+    } else {
+      fetch(url, { method:"POST", keepalive:true }).catch(()=>{});
+    }
+  } catch(e) {}
+}
+
+/* モヤンちゃんが「生きてる」感を出す、ランダムなまばたき。表示中の.moyan画像を対象に、数秒おきに一瞬だけ目を閉じる */
+let blinkTimer = null;
+let introTimer = null;
+function clearIntroTimer(){
+  if (introTimer) {
+    clearTimeout(introTimer);
+    introTimer = null;
+  }
+}
+function armBlink(){
+  if (blinkTimer) clearTimeout(blinkTimer);
+  const schedule = ()=>{
+    const delay = 2600 + Math.random()*3200;
+    blinkTimer = setTimeout(()=>{
+      document.querySelectorAll(".moyan").forEach(img=>{
+        const orig = img.getAttribute("src");
+        if (orig !== CHAR) return;
+        img.src = BLINK;
+        setTimeout(()=>{ img.src = CHAR; }, 130);
+      });
+      schedule();
+    }, delay);
+  };
+  schedule();
+}
+function showToast(msg){
+  const t = document.createElement("div"); t.className="toast"; t.textContent=msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add("show"));
+  setTimeout(()=>{ t.classList.remove("show"); setTimeout(()=>t.remove(),300); }, 1800);
+}
+function transitionTo(renderFn){
+  const current = document.querySelector(".screen");
+  if (!current) { renderFn(); return; }
+  current.classList.add("is-leaving");
+  setTimeout(renderFn, 180);
+}
+
+function header(){
+  let dotsHtml = "";
+  if (state.screen === "q"){
+    dotsHtml = `<div class="dots">` + QUESTIONS.map((_,idx)=>{
+      const cls = idx < state.i ? "done" : (idx === state.i ? "on" : "");
+      return `<i class="${cls}"></i>`;
+    }).join("") + `</div>`;
+  }
+  return `
+  <header class="hdr">
+    <div class="hdr-brand">
+      <img class="hdr-logo" src="${CHAR}" alt="" />
+      <p class="hdr-title">${TITLE}</p>
+    </div>
+    ${dotsHtml}
+  </header>`;
+}
+
+function renderTop(){
+  clearIntroTimer();
+  root().innerHTML = `
+    ${header()}
+    <section class="screen top-screen">
+      <div class="top-hero float">
+        <img class="moyan lg top-moyan" src="${CHAR}" alt="モヤンちゃん" />
+      </div>
+      <div class="top-copy">
+        <h1 class="h1">モヤンちゃん<br/>3分働き方整理ワーク</h1>
+        <p class="badge-tap"><span>何かあるたびに、自分が調整役になっているあなたへ</span></p>
+        <p class="lead top-lead">子どもの発熱、急な予定、家族のこと。<br/>そのたびに自分を後回しにしてきた今、<br/>モヤンと一緒に整理してみよう。</p>
+        <div class="stack" style="margin-top:18px">
+          <button class="btn primary" id="start">モヤンと整理してみる</button>
+        </div>
+        <p class="caption" style="margin-top:12px">無料・そのまま始められます</p>
+      </div>
+    </section>
+  `;
+  document.getElementById("start").onclick = ()=>{ trackEvent("work_start", true); state.screen="intro"; state.introStep=0; renderIntro(); };
+  armBlink();
+}
+
+function renderIntro(){
+  clearIntroTimer();
+  const step = Math.min(state.introStep, INTRO_MESSAGES.length - 1);
+  const isLast = step === INTRO_MESSAGES.length - 1;
+  const progressText = isLast ? "画面をタップしてはじめる" : "画面をタップで次へ";
+  root().innerHTML = `
+    ${header()}
+    <section class="screen intro-screen" id="introScreen">
+      <div class="qtop">
+        <img class="moyan md float" src="${CHAR}" alt="" style="margin:2px 0 8px" />
+      </div>
+      <div class="replybox">
+        <span class="who">モヤン：</span>
+        <span class="reply-text">${escapeHtml(INTRO_MESSAGES[step])}</span>
+      </div>
+      <p class="intro-progress">${progressText}</p>
+
+      <div class="stack intro-actions">
+        ${isLast ? `<button class="btn primary" id="introStart">モヤンと整理してみる</button>` : ``}
+      </div>
+    </section>
+  `;
+  const advanceIntro = ()=>{
+    clearIntroTimer();
+    if (state.screen !== "intro") return;
+    if (isLast) {
+      state.screen="q";
+      state.i=0;
+      renderQuestion();
+    } else {
+      state.introStep = step + 1;
+      renderIntro();
+    }
+  };
+  document.getElementById("introScreen").onclick = advanceIntro;
+  const introStart = document.getElementById("introStart");
+  if (introStart) introStart.onclick = (event)=>{ event.stopPropagation(); advanceIntro(); };
+  armBlink();
+}
+
+function currentSelection(item){
+  const key = item.key;
+  if (!Array.isArray(state.answers[key])) state.answers[key] = [];
+  return state.answers[key];
+}
+
+function renderQuestion(){
+  const item = QUESTIONS[state.i];
+  const sel = currentSelection(item);
+  const freeVal = state.freeText[item.key] || "";
+  const otherOn = !!state.freeOpen[item.key];
+
+  const chipsHtml = item.chips.map(c=>{
+    const on = sel.includes(c);
+    return `<button class="optrow ${on?'on':''}" data-chip="${escapeAttr(c)}">
+      <span class="ot">${escapeHtml(c)}</span><span class="ock"></span>
+    </button>`;
+  }).join("") + `<button class="optrow other ${otherOn?'on':''}" id="chip-other">
+      <span class="ot">${OTHER}</span><span class="ock"></span>
+    </button>`;
+
+  root().innerHTML = `
+    ${header()}
+    <section class="screen">
+      <div class="qtop">
+        <img class="moyan md float" id="qmoyan" src="${CHAR}" alt="" style="margin:2px 0 8px" />
+      </div>
+      <div class="replybox" id="qbubble-wrap">
+        <span class="who">モヤン：</span>
+        <span class="reply-text" id="qbubble">${item.q}</span>
+      </div>
+      <p class="choice-rule">${item.multi ? "いくつでもOK" : "1つえらんでね"}</p>
+      <div id="chipzone">
+        <div class="optionlist" id="chips">${chipsHtml}</div>
+        <div class="freewrap ${otherOn?'open':''}" id="freewrap">
+          <textarea class="answer" id="freeText" placeholder="${item.ph}">${escapeHtml(freeVal)}</textarea>
+        </div>
+      </div>
+      <div class="composer">
+        <p class="hint-select" id="hintSelect">気になるものをタップしてね</p>
+        <div class="stack">
+          <button class="btn primary" id="next" disabled>次へすすむ</button>
+          ${state.i>0 ? `<button class="btn ghost" id="back" style="align-self:center">戻る</button>` : ``}
+        </div>
+      </div>
+    </section>
+  `;
+
+  const nextBtn = document.getElementById("next");
+  const hintEl = document.getElementById("hintSelect");
+  const otherBtn = document.getElementById("chip-other");
+  const freeWrap = document.getElementById("freewrap");
+  const freeText = document.getElementById("freeText");
+  function setOtherOpen(open){
+    state.freeOpen[item.key] = open;
+    freeWrap.classList.toggle("open", open);
+    otherBtn.classList.toggle("on", open);
+    if (open) freeText.focus();
+  }
+  function refreshNext(){
+    const hasChip = sel.length > 0;
+    const hasFree = state.freeOpen[item.key] && freeText.value.trim().length > 0;
+    const ready = hasChip || hasFree;
+    nextBtn.disabled = !ready;
+    hintEl.style.opacity = ready ? "0" : "1";
+  }
+
+  const chipButtons = Array.from(document.getElementById("chips").querySelectorAll("[data-chip]"));
+  chipButtons.forEach(btn=>{
+    btn.onclick = ()=>{
+      const val = btn.dataset.chip;
+      const idx = sel.indexOf(val);
+      const exclusive = item.exclusive || [];
+      const isExclusive = exclusive.includes(val);
+      if (item.multi){
+        if (idx>=0) {
+          sel.splice(idx,1);
+        } else if (isExclusive) {
+          sel.length = 0;
+          sel.push(val);
+          setOtherOpen(false);
+        } else {
+          for (let i = sel.length - 1; i >= 0; i--) {
+            if (exclusive.includes(sel[i])) sel.splice(i, 1);
+          }
+          sel.push(val);
+        }
+        chipButtons.forEach(b=>b.classList.toggle("on", sel.includes(b.dataset.chip)));
+      } else {
+        if (idx>=0) {
+          sel.splice(idx,1);
+          btn.classList.remove("on");
+          refreshNext();
+          return;
+        }
+        sel.length = 0; sel.push(val);
+        chipButtons.forEach(b=>b.classList.toggle("on", b===btn));
+        setOtherOpen(false);
+      }
+      refreshNext();
+    };
+  });
+
+  otherBtn.onclick = ()=>{
+    const willOpen = !state.freeOpen[item.key];
+    if (!item.multi && willOpen) {
+      sel.length = 0;
+      chipButtons.forEach(b=>b.classList.remove("on"));
+    }
+    if (item.multi && willOpen && item.exclusive) {
+      for (let i = sel.length - 1; i >= 0; i--) {
+        if (item.exclusive.includes(sel[i])) sel.splice(i, 1);
+      }
+      chipButtons.forEach(b=>b.classList.toggle("on", sel.includes(b.dataset.chip)));
+    }
+    setOtherOpen(willOpen);
+    refreshNext();
+  };
+  freeText.addEventListener("input", ()=>{
+    state.freeText[item.key] = freeText.value.trim();
+    refreshNext();
+  });
+
+  const backBtn = document.getElementById("back");
+  if (backBtn) backBtn.onclick = ()=>{ state.i -= 1; renderQuestion(); };
+
+  nextBtn.onclick = ()=>{
+    state.freeText[item.key] = freeText.value.trim();
+    playAckThenAdvance(item);
+  };
+
+  refreshNext();
+  armBlink();
+}
+
+function buildAckText(item){
+  const sel = currentSelection(item);
+  const chosenChip = [...sel].reverse().find(c => item.aizuchi && item.aizuchi[c]);
+  if (chosenChip) return item.aizuchi[chosenChip];
+  const free = state.freeText[item.key];
+  if (state.freeOpen[item.key] && free) {
+    return "教えてくれてありがとう。\nその言葉、そのまま覚えておくね。";
+  }
+  return "うん、聞かせてくれてありがとう。";
+}
+
+function playAckThenAdvance(item){
+  if (document.activeElement && typeof document.activeElement.blur === "function") document.activeElement.blur();
+  const reactionClass = REACTION[item.stamp] || "nodding";
+  const ackText = buildAckText(item);
+  root().innerHTML = `
+    ${header()}
+    <section class="screen ack-screen">
+      <div class="qtop">
+        <img class="moyan md ${reactionClass}" id="qmoyan" src="${CHAR}" alt="" style="margin:2px 0 8px" />
+      </div>
+      <div class="replybox ack-active">
+        <span class="who">モヤン：</span>
+        <span class="reply-text">${escapeHtml(ackText)}</span>
+      </div>
+    </section>
+  `;
+  const moyanImg = document.getElementById("qmoyan");
+  moyanImg.addEventListener("animationend", ()=>moyanImg.classList.remove(reactionClass), { once:true });
+  armBlink();
+  setTimeout(()=>{
+    transitionTo(()=>{
+      if (state.i < QUESTIONS.length - 1){ state.i += 1; renderQuestion(); }
+      else { trackEvent("questions_complete", true); renderSorting(); }
+    });
+  }, 3000);
+}
+
+function renderSorting(){
+  root().innerHTML = `
+    ${header()}
+    <section class="screen center sorting-screen">
+      <p class="brandline" style="margin-bottom:8px">整理メモを作っています・・・</p>
+      <img class="moyan lg" src="${CHAR}" alt="" style="margin:8px 0" />
+      <p class="sorting-message" id="sortingMessage" aria-live="polite"></p>
+    </section>
+  `;
+  armBlink();
+  typewriter("sortingMessage", SORTING_MESSAGE, ()=>{
+    markFinalPhrase();
+    triggerSparkles();
+    setTimeout(()=>transitionTo(renderSummary), 2150);
+  });
+}
+
+function markFinalPhrase(){
+  const el = document.getElementById("sortingMessage");
+  if (!el) return;
+  const phrase = "あなたはどう感じる？";
+  const safeText = escapeHtml(SORTING_MESSAGE);
+  const safePhrase = escapeHtml(phrase);
+  el.innerHTML = safeText.replace(
+    safePhrase,
+    `<span class="final-phrase" id="finalPhrase">${safePhrase}<span class="phrase-sparkle-field" id="sparkleField" aria-hidden="true"></span></span>`
+  );
+}
+
+function triggerSparkles(){
+  const field = document.getElementById("sparkleField");
+  if (!field) return;
+  field.innerHTML = "";
+  const points = [
+    [-82,-30,-146,-80,-164,74,21,-24],[-64,28,-118,20,-136,122,15,34],[-32,-42,-76,-104,-88,70,17,70],
+    [72,-30,144,-78,166,80,21,26],[60,28,126,18,150,126,15,-28],[28,-42,82,-102,96,72,17,62],
+    [-96,2,-160,-22,-178,110,16,-58],[96,2,164,-18,184,116,16,42],
+    [-56,56,-94,92,-112,168,18,54],[0,62,0,112,12,176,14,88],[56,56,98,92,116,168,18,32],
+  ];
+  points.forEach(([sx,sy,dx,dy,fallX,fallY,size,rot], index)=>{
+    const s = document.createElement("span");
+    s.className = "sparkle";
+    s.textContent = index % 3 === 0 ? "✦" : "✧";
+    s.style.setProperty("--sx", `${sx}px`);
+    s.style.setProperty("--sy", `${sy}px`);
+    s.style.setProperty("--dx", `${dx}px`);
+    s.style.setProperty("--dy", `${dy}px`);
+    s.style.setProperty("--fall-x", `${fallX}px`);
+    s.style.setProperty("--fall-y", `${fallY}px`);
+    s.style.setProperty("--size", `${size}px`);
+    s.style.setProperty("--rot", `${rot}deg`);
+    s.style.animationDelay = `${index * 12}ms`;
+    field.appendChild(s);
+  });
+}
+
+function typewriter(id, text, done){
+  const el = document.getElementById(id);
+  if (!el) return;
+  let i = 0;
+  const tick = ()=>{
+    el.textContent = text.slice(0, i);
+    if (i >= text.length) {
+      el.classList.add("done");
+      if (typeof done === "function") done();
+      return;
+    }
+    const ch = text[i];
+    i += 1;
+    const delay = ch === "\n" ? 260 : /[。、]/.test(ch) ? 180 : 82;
+    setTimeout(tick, delay);
+  };
+  setTimeout(tick, 260);
+}
+
+/* ==== 回答の取り出し ==== */
+function combinedAnswers(item){
+  const arr = [...currentSelection(item)];
+  const free = state.freeText[item.key];
+  if (state.freeOpen[item.key] && free) arr.push(free);
+  return arr;
+}
+function joinNatural(arr){
+  if (!arr || !arr.length) return "";
+  return arr.join("、");
+}
+function answerText(item){
+  const arr = combinedAnswers(item);
+  return arr.length ? arr.join("・") : "（未回答）";
+}
+function byKey(key){ return QUESTIONS.find(q=>q.key===key); }
+function surveyRow(v){
+  return `<button class="optrow" data-v="${escapeAttr(v)}"><span class="ot">${escapeHtml(v)}</span><span class="ock"></span></button>`;
+}
+
+function isUnknownValue(v){
+  return /分からない/.test(v);
+}
+function cleanList(arr, drop=[]){
+  return (arr || []).filter(v=>v && !drop.includes(v) && !isUnknownValue(v));
+}
+function hasAny(arr, values){
+  return (arr || []).some(v=>values.includes(v));
+}
+function extractParts(){
+  const situationRaw = combinedAnswers(byKey("situation"));
+  const struggleRaw = combinedAnswers(byKey("struggle"));
+  const priorityRaw = combinedAnswers(byKey("priority"));
+  const wishRaw = combinedAnswers(byKey("wish"));
+  const releaseRaw = combinedAnswers(byKey("release"));
+  const criteriaRaw = combinedAnswers(byKey("criteria"));
+  const stepRaw = combinedAnswers(byKey("step"));
+  return {
+    situation: cleanList(situationRaw),
+    struggle: cleanList(struggleRaw, ["今は特に強いモヤモヤや限界は感じていない・よく分からない"]),
+    priority: cleanList(priorityRaw),
+    wish: cleanList(wishRaw),
+    release: cleanList(releaseRaw),
+    criteria: cleanList(criteriaRaw),
+    step: cleanList(stepRaw),
+    noStruggle: struggleRaw.includes("今は特に強いモヤモヤや限界は感じていない・よく分からない"),
+    hold: stepRaw.includes("今日は何も決めず、とりあえず温かいお茶でも飲んで休む"),
+    wantsTalk: stepRaw.includes("いま抱えている「モヤモヤ」や「しんどさ」を文字にして吐き出してみる"),
+  };
+}
+
+/* 冒頭のフック文（短く。診断ではなく、仮説として受け取れるようにする） */
+function buildDiagnosisShort(){
+  return `整理メモをつくったよ。\n\n今いちばん持ち帰るなら、\nまずここだけ見てね。`;
+}
+
+function joinMoyanList(arr){
+  const items = (arr || []).filter(Boolean);
+  if (!items.length) return "まだはっきりしないこと";
+  if (items.length === 1) return items[0];
+  if (items.length === 2) return `${items[0]}と${items[1]}`;
+  return `${items.slice(0,-1).join("、")}、それから${items[items.length-1]}`;
+}
+
+function resultSignals(p){
+  return {
+    guilt: hasAny(p.struggle, ["急な休みで職場や顧客に「すみません」と謝り続けるのが精神的につらい"]),
+    unfair: hasAny(p.struggle, ["突発対応で自分の予定や仕事ばかり犠牲になり、不公平さを感じる"]),
+    meaningLost: hasAny(p.struggle, ["「こんなに無理して私が働く意味ってあるのかな？」と分からなくなる"]),
+    depleted: hasAny(p.struggle, ["家事・育児・仕事でHPがゼロになり、自分の時間や休息が全くない"]) || hasAny(p.situation, ["大きな出来事はないけれど、日々の積み重ねで心身が限界に近い"]),
+    valuesGuiltFreeSystem: hasAny(p.priority, ["突発的なことがあっても「罪悪感なく」続けられる仕組み・働き方"]),
+    valuesOwnTime: hasAny(p.priority, ["家族や母親という役割から離れられる「自分だけの時間・役割」"]),
+    valuesIncome: hasAny(p.priority, ["毎月の収入や家計の安心感"]),
+    wishKeepConnected: hasAny(p.wish, ["細々とでも、自分らしく社会とつながって働き続けたい"]),
+    wishReset: hasAny(p.wish, ["一度今のパンク状態を解消して、暮らしと働き方を組み直したい"]),
+    wishRestFirst: hasAny(p.wish, ["まずは無理に決めず、自分の心身を休めることを最優先にしたい"]),
+    releaseAlone: hasAny(p.release, ["1人で突発対応や悩みを抱え込む状況"]),
+  };
+}
+
+function buildReceiptText(p){
+  const s = resultSignals(p);
+  if (p.hold) {
+    return "今は休む・整えるを選んだんだね。ここまで見られたら十分だよ。";
+  }
+  if (p.noStruggle) {
+    return "今は、強い不安や後回しがあるわけではなさそうだね。無理に悩みを作らなくていいよ。";
+  }
+  if (s.guilt && s.depleted) {
+    return "そういう気持ちを抱えていたんだね。謝りながら我慢するのも、体力も心もすり減るよね。";
+  }
+  if (s.unfair && s.valuesGuiltFreeSystem) {
+    return "そっか。自分ばかりが調整役になっている感じ、しんどいよね。罪悪感なく続けたい気持ち、よくわかるよ。";
+  }
+  if (s.valuesIncome && s.wishKeepConnected) {
+    return "そういう気持ちを抱えていたんだね。収入も、つながりも、どちらも大事だから迷うんだね。";
+  }
+  return "そういう気持ちを抱えていたんだね。今の働き方をどうするか、簡単に決められないところにいるんだね。";
+}
+
+function buildVisibleText(p){
+  const s = resultSignals(p);
+  if (p.hold) {
+    return "今は、何かを始めるより、いったん置いておきたい状態に近そうだよ。";
+  }
+  if (p.noStruggle) {
+    return "後回しや不安を強く感じていないなら、今の暮らしで何が守れているのかを見る方が合っていそうだよ。";
+  }
+  if (s.guilt && s.depleted) {
+    return "謝りながら我慢を重ねている一方で、休息や自分の時間がほとんどない状態が重なっていそうだよ。";
+  }
+  if (s.unfair && s.valuesGuiltFreeSystem) {
+    return "自分ばかりが調整役になっている不公平さと、罪悪感なく続けたい気持ちが、両方あるみたいだよ。";
+  }
+  if (s.meaningLost && s.wishReset) {
+    return "働く意味を見失いかけている一方で、今のやり方を一度組み直したい気持ちが強そうだよ。";
+  }
+  if (s.depleted && s.wishRestFirst) {
+    return "HPがゼロに近いのに、休むことを後回しにしてしまっている感じがあるよ。";
+  }
+  if (s.valuesOwnTime && s.releaseAlone) {
+    return "自分だけの時間が欲しい気持ちと、1人で抱え込んでいる状況が、重なっていそうだよ。";
+  }
+  if (s.valuesIncome && s.wishKeepConnected) {
+    return "収入も、社会とのつながりも手放したくない気持ちが、決断を難しくしていそうだよ。";
+  }
+  if (p.priority.length || p.wish.length) {
+    return `${joinMoyanList([...p.priority, ...p.wish].slice(0, 2))}あたりから、今の暮らしを見てみてもよさそうだよ。`;
+  }
+  return "まだはっきりした言葉にはなっていないけれど、少し立ち止まって考えたい感じはありそうだよ。";
+}
+
+function buildDeepInsight(p){
+  const s = resultSignals(p);
+
+  if (p.hold) {
+    return {
+      key:"今日は決めない、も選択肢に入れていい。",
+      body:"働き方の話は、答えを出すだけが整理じゃないよ。\n今日のメモを一度置いて、また気になったときに見直せたら十分だよ。",
+      prompt:"今日は、ここまでにしておく？"
+    };
+  }
+
+  if (p.noStruggle) {
+    return {
+      key:"今は無理に理由を探さなくていい。",
+      body:"強いモヤモヤがないなら、今の暮らしで何が守れているのかを見ておく方が、次に活きるかもしれないよ。",
+      prompt:"自分で見てみて、意外だったところはある？"
+    };
+  }
+
+  if (s.guilt && s.depleted) {
+    return {
+      key:"謝りながら我慢を重ねるほど、休むこと自体に罪悪感が育っていく。",
+      body:"「すみません」を重ねるたびに、自分がわがままなんじゃないかと思えてくるよね。\nでも、HPがゼロに近いなら、まず減らすべきは我慢の材料の方かもしれないよ。",
+      prompt:"最近、いちばん「すみません」を言ったのはどんな場面？"
+    };
+  }
+
+  if (s.unfair && s.valuesGuiltFreeSystem) {
+    return {
+      key:"自分ばかりが調整役になっている不公平感の裏に、罪悪感なく続けたい気持ちがある。",
+      body:"『なんで私ばかり』という気持ちは、わがままじゃなくて、ずっと1人で調整してきたことへの自然な反応だよ。\n罪悪感なく続けられる仕組みがあれば、その不公平感も少し軽くなるのかもしれないね。",
+      prompt:"今の調整の中で、誰かに分けられそうな部分はある？"
+    };
+  }
+
+  if (s.meaningLost && s.wishReset) {
+    return {
+      key:"働く意味を見失いかけているのは、今のやり方のまま走り続けているからかもしれない。",
+      body:"がんばるほど空回りする感覚があるなら、それは気持ちの問題じゃなく、仕組みが今のあなたに合っていないサインかもしれないよ。\n意味を探す前に、一度組み直してみてもよさそうだよ。",
+      prompt:"今のやり方の中で、いちばん変えたい部分はどこ？"
+    };
+  }
+
+  if (s.depleted && s.wishRestFirst) {
+    return {
+      key:"HPがゼロに近いなら、決める前に、まず休むことが土台になる。",
+      body:"何かを選ぶにも、体力と心の余裕がいるよね。\n今は答えを出すより、少しでもHPを回復させることを優先してもよさそうだよ。",
+      prompt:"今日、少しだけ休むとしたら何をする？"
+    };
+  }
+
+  if (s.valuesOwnTime && s.releaseAlone) {
+    return {
+      key:"母親という役割から離れられる時間が、1人で抱え込む状況を手放す鍵になりそう。",
+      body:"『〇〇ちゃんのママ』ではなく、1人の自分に戻れる時間があると、抱え込んでいたことを誰かに話す余裕も生まれやすいよ。",
+      prompt:"自分だけの時間、最後に持てたのはいつだった？"
+    };
+  }
+
+  if (s.valuesIncome && s.wishKeepConnected) {
+    return {
+      key:"収入も社会とのつながりも手放したくないから、辞めるという選択が重く感じる。",
+      body:"『辞めればラクになる』と分かっていても、簡単に選べないのは、収入とつながり、どちらも大事な理由があるからだよ。",
+      prompt:"収入とつながり、今はどちらの気持ちが強い？"
+    };
+  }
+
+  return {
+    key:"辞めるか続けるかより、暮らしの変化があっても大事にしたいものを守れるかを探しているのかも。",
+    body:"今の迷いは、正解を選べない弱さではなく、仕事も家族も、どちらも大切にしたいから出ているものにも見えるよ。",
+    prompt:"自分の言葉で言うなら、どんな感じかな？"
+  };
+}
+
+function buildNextText(p, insight){
+  const s = resultSignals(p);
+  if (p.hold) {
+    return "今日はここまででもいいよ。\nまた気になったときに、このメモを見直せば大丈夫。";
+  }
+  if (p.noStruggle) {
+    return "悩みを探さなくてもいいよ。\n今の暮らしで守れているものを、一つだけ言葉にしてみよう。";
+  }
+  if (s.guilt && s.depleted) {
+    return "今すぐ全部を変えなくていいよ。\nまずは、次に「すみません」と言いそうな場面を一つ思い浮かべて、他の言い方がないか考えてみよう。";
+  }
+  if (s.unfair && s.valuesGuiltFreeSystem) {
+    return "今すぐ仕組みを変えなくていいよ。\nまずは、今の調整の中で誰かに分けられそうな部分を一つだけ書き出してみよう。";
+  }
+  if (s.meaningLost && s.wishReset) {
+    return "全部を組み直さなくていいよ。\n今のやり方の中で、いちばん変えたい部分を一つだけ選んでみよう。";
+  }
+  if (s.depleted && s.wishRestFirst) {
+    return "今日、何も決めなくていいよ。\nまずは、5分だけでも座って休む時間を取ってみよう。";
+  }
+  if (s.valuesOwnTime && s.releaseAlone) {
+    return "全部を1人で抱えなくていいよ。\n今の気持ちを、まず誰か一人に話してみることから始めてみよう。";
+  }
+  if (s.valuesIncome && s.wishKeepConnected) {
+    return "今すぐ答えを出さなくていいよ。\nまずは、収入とつながり、今はどちらが大事か、自分の中で一度言葉にしてみよう。";
+  }
+  return `${insight.prompt}\n答えがすぐ出なくても、今日はここまでで大丈夫だよ。`;
+}
+
+function buildMemoBlocks(p){
+  const insight = buildDeepInsight(p);
+  return [
+    { title:"持ち帰るメモ", key:insight.key, body:insight.body, kind:"core" },
+    { title:"どうして迷うのか", body:buildVisibleText(p), kind:"visible" },
+    { title:"次に見ること", body:buildNextText(p, insight), kind:"reflect" },
+  ];
+}
+
+function buildDetailedMemoText(p){
+  return buildMemoBlocks(p).map(section=>`${section.title}\n${section.key ? `${section.key}\n` : ""}${section.body}`).join("\n\n");
+}
+
+function buildDetailedMemoHtml(p){
+  return `
+    <div class="result-main">
+      ${buildMemoBlocks(p).map(section=>`
+        <div class="result-block ${escapeAttr(section.kind || "")}">
+          <p class="result-heading">${escapeHtml(section.title)}</p>
+          ${section.key ? `<span class="result-key">${escapeHtml(section.key)}</span>` : ``}
+          <p class="result-body">${escapeHtml(section.body)}</p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function miniChatRow(key, item){
+  return `<button class="optrow" data-chat="${escapeAttr(key)}">
+    <span class="ot">${escapeHtml(item.label)}</span><span class="ock"></span>
+  </button>`;
+}
+
+function renderSummary(){
+  state.screen = "summary";
+  trackEvent("memo_view", true);
+  const diagnosisText = buildDiagnosisShort();
+  const p = extractParts();
+
+  root().innerHTML = `
+    ${header()}
+    <section class="screen">
+      <div style="text-align:center;margin-bottom:4px">
+        <img class="moyan md" src="${CHAR}" alt="" style="margin:0 auto" />
+        <p class="brandline" style="margin-top:6px">モヤンちゃんの整理メモ</p>
+      </div>
+
+      <div class="replybox diagnosis">
+        <span class="who">モヤン：</span>
+        <span class="reply-text diagnosis-text">${escapeHtml(diagnosisText)}</span>
+      </div>
+
+      <div class="detail-wrap open" id="longWrap">
+        ${buildDetailedMemoHtml(p)}
+      </div>
+
+      <div class="survey-q">
+        <p>この整理、どれに近い？</p>
+        <div class="optionlist" id="q-match">
+          ${surveyRow("しっくりくる")}
+          ${surveyRow("少し違う")}
+          ${surveyRow("まだ言葉にできない")}
+        </div>
+      </div>
+
+      <div class="mini-chat">
+        <p class="mini-chat-title">次にもう少し見るなら</p>
+        <div class="optionlist" id="miniChatOptions">
+          ${Object.entries(MINI_CHAT).map(([key,item])=>miniChatRow(key,item)).join("")}
+        </div>
+        <div class="replybox mini-chat-reply" id="miniChatReply">
+          <span class="who">モヤン：</span>
+          <span class="reply-text" id="miniChatText"></span>
+          <div class="stack" style="margin-top:12px">
+            <button class="btn secondary" id="miniChatCopy">整理メモをコピーする</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="human-section-title">もう少し一緒に整理したいときだけ</p>
+      <div class="owner-card">
+        <img class="owner-face" src="${OWNER_PHOTO}" alt="" />
+        <div>
+          <p class="owner-label">必要なら、このメモを送れる相手</p>
+          <p class="owner-name">ちゃん｜転勤族妻・3児の母 / キャリコン学習中</p>
+          <p class="owner-text">私自身も、暮らしの変化に合わせて、何度も自分の仕事や時間を調整してきました。<br><br>辞める・続ける・変えるを急いで決める前に、今抱えている罪悪感や、本当は守りたいものを一緒に整理しています。</p>
+          <p class="owner-handle">${X_HANDLE}</p>
+        </div>
+      </div>
+      <div class="copybox">
+        <ul class="consult-list">
+          <li>ワークで見えること：今、自分がどこで迷っているのか。</li>
+          <li>無料セッションで見ること：今の調整の負担、罪悪感の正体、守りたいもの。</li>
+          <li>持ち帰るもの：自分なりの判断基準と、最初にやる一歩。</li>
+          <li>無料の範囲：30分。今日はメモを見るだけでも大丈夫です。</li>
+        </ul>
+      </div>
+      <div class="stack" style="margin:14px auto 0">
+        <button class="btn primary" id="copy">整理メモをコピーする</button>
+        <a class="btn secondary link" href="${X_PROFILE_URL}" target="_blank" rel="noopener">Xのプロフィールを見る</a>
+        <a class="btn secondary link" id="xlink" href="${X_DM_URL}" target="_blank" rel="noopener">XのDM作成画面を開く</a>
+      </div>
+      <div class="copybox">
+        コピー文には「働き方整理ワークから来ました。メモを貼りますね。」を入れてあります。必要な人だけ、DMで送ってね。
+      </div>
+      <p class="footer-note">モヤンはAIです。病気の診断や治療はできません。</p>
+    </section>
+  `;
+
+  bindSurvey("q-match", (v)=>{ state.survey.memoMatch = v; });
+  bindMiniChat();
+
+  document.getElementById("copy").onclick = ()=>{
+    const text = buildResultText();
+    copyToClipboard(text);
+    trackEvent("memo_copy");
+    showToast("整理メモをコピーしました");
+  };
+  const xlink = document.getElementById("xlink");
+  if (xlink) xlink.onclick = ()=>trackEvent("dm_click");
+  armBlink();
+}
+
+function bindMiniChat(){
+  const wrap = document.getElementById("miniChatOptions");
+  const reply = document.getElementById("miniChatReply");
+  const text = document.getElementById("miniChatText");
+  const copyBtn = document.getElementById("miniChatCopy");
+  if (!wrap || !reply || !text) return;
+  wrap.querySelectorAll("[data-chat]").forEach(btn=>{
+    btn.onclick = ()=>{
+      wrap.querySelectorAll("[data-chat]").forEach(b=>b.classList.remove("on"));
+      btn.classList.add("on");
+      const item = MINI_CHAT[btn.dataset.chat];
+      if (!item) return;
+      text.textContent = item.reply;
+      reply.classList.add("open");
+      const moyanImg = document.querySelector(".screen .moyan.md");
+      if (moyanImg) {
+        moyanImg.classList.remove("nodding");
+        void moyanImg.offsetWidth;
+        moyanImg.classList.add("nodding");
+        moyanImg.addEventListener("animationend", ()=>moyanImg.classList.remove("nodding"), { once:true });
+      }
+    };
+  });
+  if (copyBtn) {
+    copyBtn.onclick = ()=>{
+      copyToClipboard(buildResultText());
+      trackEvent("memo_copy");
+      showToast("整理メモをコピーしました");
+    };
+  }
+}
+
+function bindSurvey(containerId, onPick){
+  const wrap = document.getElementById(containerId);
+  wrap.querySelectorAll(".optrow").forEach(btn=>{
+    btn.onclick = ()=>{
+      wrap.querySelectorAll(".optrow").forEach(b=>b.classList.remove("on"));
+      btn.classList.add("on");
+      onPick(btn.dataset.v);
+    };
+  });
+}
+
+function buildResultText(){
+  const p = extractParts();
+  const lines = [];
+  lines.push("働き方整理ワークから来ました。メモを貼りますね。");
+  lines.push("");
+  lines.push(`【${TITLE}｜整理メモ】`);
+  lines.push("");
+  lines.push(buildDiagnosisShort());
+  lines.push("");
+  buildMemoBlocks(p).forEach(section=>{
+    lines.push(`■ ${section.title}`);
+    if (section.key) lines.push(section.key);
+    lines.push(section.body);
+    lines.push("");
+  });
+  lines.push("");
+  lines.push(`相談先：ちゃん ${X_HANDLE}`);
+  lines.push("");
+  lines.push(`この整理、どれに近い？：${state.survey.memoMatch || "（未回答）"}`);
+  return lines.join("\n");
+}
+
+function copyToClipboard(text){
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+function fallbackCopy(text){
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); } catch(e) {}
+  document.body.removeChild(ta);
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
+}
+function escapeAttr(s){ return escapeHtml(s).replace(/`/g,"&#96;"); }
+
+renderTop();
+</script>
+</body>
+</html>
