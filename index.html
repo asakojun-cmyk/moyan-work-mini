@@ -184,6 +184,9 @@ textarea.answer::placeholder{color:var(--ink-45)}
 /* --- 整理メモ画面 --- */
 .diagnosis{margin-bottom:10px}
 .diagnosis-text{font-size:15.5px;line-height:2.05}
+.memo-block-title{display:inline-block;color:var(--blue);font-weight:900;font-size:13.5px;letter-spacing:.02em}
+.memo-key{background:linear-gradient(180deg,transparent 58%,var(--cream) 58%);font-weight:800;
+  padding:0 1px;border-radius:2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .detail-toggle{display:block;width:auto;align-self:center;margin:2px auto 12px;background:transparent;border:none;
   color:var(--blue);font-weight:800;font-size:13px;padding:6px 10px}
 .detail-wrap{display:none}
@@ -239,6 +242,9 @@ textarea.answer::placeholder{color:var(--ink-45)}
 .survey-q{border:none;border-radius:16px;background:rgba(255,255,255,.86);padding:14px;margin-bottom:10px;
   box-shadow:var(--soft-shadow)}
 .survey-q p{margin:0 0 10px;font-weight:700;font-size:14px}
+.survey-reply{display:none;margin:10px 0 0;padding:10px 12px;border-radius:12px;background:var(--sky);
+  color:var(--ink);font-size:13.5px;font-weight:700;line-height:1.75;white-space:pre-line;text-align:left}
+.survey-reply.show{display:block}
 .survey-row{display:flex;gap:8px;flex-wrap:wrap}
 .survey-btn{font-family:var(--font-round);font-size:13px;font-weight:700;color:var(--ink);background:var(--white);
   border:none;border-radius:999px;padding:8px 15px;box-shadow:0 6px 18px rgba(91,107,140,.09)}
@@ -909,6 +915,16 @@ function surveyRow(v){
   return `<button class="optrow" data-v="${escapeAttr(v)}"><span class="ot">${escapeHtml(v)}</span><span class="ock"></span></button>`;
 }
 
+/* 「この整理、どれに近いかな？」を選んだときの返し。回答することに意味を持たせる */
+const SURVEY_MATCH_INFO = {
+  "しっくりくる": { key:"fits", react:"wiggling",
+    reply:"そう感じてもらえてよかった。その言葉のまま、心のどこかに置いておいてね。" },
+  "少し違うかも": { key:"off", react:"nodding",
+    reply:"ぴったりの言葉が一度で見つからなくて当たり前だよ。違和感があるところにこそ、あなたの本音が隠れているのかもね。" },
+  "まだ言葉にできないや": { key:"unclear", react:"nodding",
+    reply:"今は言葉にならなくて大丈夫。それだけ複雑な気持ちを抱えている証だから、また時間をおいて読み返してみてね。" },
+};
+
 function isUnknownValue(v){
   return /分からない/.test(v);
 }
@@ -1026,7 +1042,7 @@ function buildNextText(p){
 function buildMemoBlocks(p){
   const insight = buildDeepInsight(p);
   return [
-    { title:"持ち帰るメモ", key:insight.key, body:insight.body, kind:"core" },
+    { title:"今のあなたの状態", key:insight.key, body:insight.body, kind:"core" },
     { title:"どうして迷うのか", body:buildVisibleText(p), kind:"visible" },
     { title:"次に見ること", body:buildNextText(p), kind:"reflect" },
   ];
@@ -1034,6 +1050,21 @@ function buildMemoBlocks(p){
 
 function buildDetailedMemoText(p){
   return buildMemoBlocks(p).map(section=>`${section.title}\n${section.key ? `${section.key}\n` : ""}${section.body}`).join("\n\n");
+}
+
+/* 引用符「」で囲まれた本人の回答部分だけを、マーカーを引いたように見せる */
+function highlightQuotes(escapedText){
+  return escapedText.replace(/「[^」]*」/g, m=>`<mark class="memo-key">${m}</mark>`);
+}
+
+/* 整理メモ本文をHTML化：見出しは太字、本人の回答の引用部分にマーカー装飾を付ける */
+function renderMemoBlocksHtml(p){
+  return buildMemoBlocks(p).map(section=>{
+    const titleHtml = `<strong class="memo-block-title">${escapeHtml(section.title)}</strong>`;
+    const keyHtml = section.key ? `${highlightQuotes(escapeHtml(section.key))}\n` : "";
+    const bodyHtml = highlightQuotes(escapeHtml(section.body));
+    return `${titleHtml}\n${keyHtml}${bodyHtml}`;
+  }).join("\n\n");
 }
 
 function miniChatRow(key, item){
@@ -1059,11 +1090,11 @@ function renderSummary(){
 
       <div class="replybox diagnosis">
         <span class="who">モヤン：</span>
-        <span class="reply-text diagnosis-text">${escapeHtml(`${diagnosisText}\n\n${buildDetailedMemoText(p)}`)}</span>
+        <span class="reply-text diagnosis-text">${escapeHtml(diagnosisText)}\n\n${renderMemoBlocksHtml(p)}</span>
       </div>
 
       <div style="text-align:center;margin:16px 0 6px">
-        <img class="moyan md float" id="surveyCloud" src="assets/cloud_chat.png" alt="" />
+        <img class="moyan md float" id="surveyCloud" src="assets/cloud_chat.png" alt="" style="margin:0 auto" />
       </div>
 
       <div class="survey-q">
@@ -1073,6 +1104,7 @@ function renderSummary(){
           ${surveyRow("少し違うかも")}
           ${surveyRow("まだ言葉にできないや")}
         </div>
+        <p class="survey-reply" id="surveyReply"></p>
       </div>
 
       <div class="stack" style="margin:16px auto 0">
@@ -1158,7 +1190,25 @@ function renderSummary(){
     </section>
   `;
 
-  bindSurvey("q-match", (v)=>{ state.survey.memoMatch = v; });
+  bindSurvey("q-match", (v)=>{
+    state.survey.memoMatch = v;
+    saveState();
+    const info = SURVEY_MATCH_INFO[v];
+    trackEvent(`memo_match_${info ? info.key : "other"}`, true);
+    const reply = document.getElementById("surveyReply");
+    if (reply && info) {
+      reply.textContent = info.reply;
+      reply.classList.add("show");
+    }
+    const cloud = document.getElementById("surveyCloud");
+    if (cloud) {
+      const cls = (info && info.react) || "nodding";
+      cloud.classList.remove("nodding","wiggling");
+      void cloud.offsetWidth;
+      cloud.classList.add(cls);
+      cloud.addEventListener("animationend", ()=>cloud.classList.remove(cls), { once:true });
+    }
+  });
   bindMiniChat();
   bindNextChoice();
 
