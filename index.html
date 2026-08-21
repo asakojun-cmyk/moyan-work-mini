@@ -789,7 +789,7 @@ function playAckThenAdvance(item){
       if (state.i < QUESTIONS.length - 1){ state.i += 1; renderQuestion(); }
       else { trackEvent("questions_complete", true); renderSorting(); }
     });
-  }, 3000);
+  }, 2000);
 }
 
 function renderSorting(){
