@@ -159,6 +159,8 @@ button{font:inherit;cursor:pointer;color:inherit}
   transition:transform .12s var(--ease),background .12s var(--ease),color .12s var(--ease),box-shadow .12s var(--ease)}
 .optrow:active{transform:scale(.98)}
 .optrow .ot{flex:1;line-height:1.4}
+.optrow .ot strong{font-weight:900;color:var(--ink)}
+.optrow .ot .ot-sub{font-weight:700;color:var(--ink-60)}
 .optrow .ock{flex:none;width:18px;height:18px;border-radius:999px;border:1px solid var(--button-line);position:relative}
 .optrow.on{background:#f2f8ff;color:var(--ink);box-shadow:0 10px 24px rgba(91,107,140,.16)}
 .optrow.on .ock{background:var(--blue);border-color:var(--blue)}
@@ -454,6 +456,42 @@ const QUESTIONS = [
 ];
 
 const OTHER = "そのほか（自由に書く）";
+
+/* 選択肢の冒頭キーワードだけ濃く太字にして、パッと見で直感理解しやすくする（キーワードは各chip文の先頭一致部分） */
+const CHIP_KEYWORD = {
+  "子どもの急なお熱や通院で、予定が変わりがち":"子どもの急なお熱や通院で",
+  "夫の「ごめん無理」で、いつも私が調整役に":"夫の「ごめん無理」で",
+  "働き方を変えたのに、やっぱりパンクしそう":"働き方を変えたのに",
+  "職場で「すみません」と謝り続けるのがつらい":"職場で「すみません」と謝り続ける",
+  "子どもは悪くないのに強く当たる自分に自己嫌悪":"子どもは悪くないのに強く当たる自分に",
+  "自分だけが犠牲になっている気がする":"自分だけが犠牲になっている",
+  "自分の時間や心の余裕がなく、クタクタ":"自分の時間や心の余裕がなく",
+  "強い限界は感じていないけれど、よく分からない":"強い限界は感じていないけれど",
+  "笑顔で子どもといられる心のゆとり":"笑顔で子どもといられる",
+  "「申し訳ない」と思わずに気持ちよく働ける環境":"「申し訳ない」と思わずに",
+  "ママ業をお休みして、自分に戻れる時間":"ママ業をお休みして",
+  "頑張った分、ちゃんと収入につながること":"頑張った分",
+  "仕事を辞めたいわけじゃないのに、続けるのがつらい":"仕事を辞めたいわけじゃないのに",
+  "一度立ち止まって、これからの働き方を整え直したい":"一度立ち止まって",
+  "まずは心と体をゆっくり休ませたい":"まずは心と体を",
+  "自分でもどうしたいのかわからない":"自分でもどうしたいのか",
+  "「申し訳ない」「私がしっかりしなきゃ」というプレッシャー":"「申し訳ない」「私がしっかりしなきゃ」という",
+  "一人でぜんぶの調整や家事を背負い込むこと":"一人でぜんぶの調整や家事を",
+  "SNSや周りの人と比べて「私なんて」と自分を責める時間":"SNSや周りの人と比べて",
+  "急な予定変更があっても、心が崩れない「ゆったりとした余白」":"急な予定変更があっても",
+  "自分だけが我慢するんじゃなく、「家族で支え合えること」":"自分だけが我慢するんじゃなく",
+  "自分の心と体の健康をすり減らさない「無理のないペース」":"自分の心と体の健康をすり減らさない",
+  "いまのモヤモヤをノートに自由に書いてみる":"いまのモヤモヤをノートに",
+  "今の暮らしの中で「これ、やめてみようかな」を探してみる":"今の暮らしの中で「これ、やめてみようかな」を",
+  "今日は何も決めず、温かいお茶でも飲んでとにかく休む":"今日は何も決めず",
+};
+function chipLabelHtml(c){
+  const kw = CHIP_KEYWORD[c];
+  if (!kw || !c.startsWith(kw)) return escapeHtml(c);
+  const rest = c.slice(kw.length);
+  return `<strong>${escapeHtml(kw)}</strong>${rest ? `<span class="ot-sub">${escapeHtml(rest)}</span>` : ""}`;
+}
+
 const state = { screen:"top", introStep:0, i:0, answers:{}, freeOpen:{}, freeText:{}, survey:{ memoMatch:null }, tracked:{} };
 const TRACKABLE_EVENTS = new Set(["work_start","questions_complete","memo_view","memo_copy","dm_click","next_choice_self","next_choice_stop","next_choice_talk"]);
 
@@ -659,7 +697,7 @@ function renderQuestion(){
   const chipsHtml = item.chips.map(c=>{
     const on = sel.includes(c);
     return `<button class="optrow ${on?'on':''}" data-chip="${escapeAttr(c)}">
-      <span class="ot">${escapeHtml(c)}</span><span class="ock"></span>
+      <span class="ot">${chipLabelHtml(c)}</span><span class="ock"></span>
     </button>`;
   }).join("") + `<button class="optrow other ${otherOn?'on':''}" id="chip-other">
       <span class="ot">${OTHER}</span><span class="ock"></span>
@@ -833,7 +871,7 @@ function renderSorting(){
   typewriter("sortingMessage", SORTING_MESSAGE, ()=>{
     markFinalPhrase();
     triggerSparkles();
-    setTimeout(()=>transitionTo(renderSummary), 2150);
+    setTimeout(()=>transitionTo(renderSummary), 1200);
   });
 }
 
@@ -889,10 +927,10 @@ function typewriter(id, text, done){
     }
     const ch = text[i];
     i += 1;
-    const delay = ch === "\n" ? 260 : /[。、]/.test(ch) ? 180 : 82;
+    const delay = ch === "\n" ? 150 : /[。、]/.test(ch) ? 100 : 45;
     setTimeout(tick, delay);
   };
-  setTimeout(tick, 260);
+  setTimeout(tick, 150);
 }
 
 /* ==== 回答の取り出し ==== */
@@ -1177,7 +1215,8 @@ function renderSummary(){
           </div>
         </div>
 
-        <div class="stack" style="margin:14px auto 0">
+        <p class="caption" style="margin:14px 0 8px;text-align:center">※鍵アカウントや普段使っていないアカウントからのDMでも大丈夫ですよ</p>
+        <div class="stack" style="margin:0 auto">
           <a class="btn secondary link" href="${X_PROFILE_URL}" target="_blank" rel="noopener">Xのプロフィールを見る</a>
           <a class="btn secondary link" id="xlink" href="${X_DM_URL}" target="_blank" rel="noopener">XのDM作成画面を開く</a>
         </div>
