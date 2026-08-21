@@ -834,7 +834,7 @@ function renderSorting(){
   typewriter("sortingMessage", SORTING_MESSAGE, ()=>{
     markFinalPhrase();
     triggerSparkles();
-    setTimeout(()=>transitionTo(renderSummary), 2400);
+    setTimeout(()=>transitionTo(renderSummary), 3500);
   });
 }
 
@@ -890,10 +890,10 @@ function typewriter(id, text, done){
     }
     const ch = text[i];
     i += 1;
-    const delay = ch === "\n" ? 200 : /[。、]/.test(ch) ? 140 : 65;
+    const delay = ch === "\n" ? 280 : /[。、]/.test(ch) ? 200 : 90;
     setTimeout(tick, delay);
   };
-  setTimeout(tick, 200);
+  setTimeout(tick, 280);
 }
 
 /* ==== 回答の取り出し ==== */
