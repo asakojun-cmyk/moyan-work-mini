@@ -54,16 +54,13 @@ button{font:inherit;cursor:pointer;color:inherit}
 .screen.center{justify-content:center;text-align:center;align-items:center}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
-.h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.02em;line-height:1.55;color:var(--ink)}
-.h1-sub{display:inline-block;margin-top:4px;font-size:14.5px;font-weight:900;color:var(--blue);letter-spacing:.02em}
-.lead{margin:0;font-size:14.5px;font-weight:500;line-height:1.95;color:var(--ink-60)}
+.top-headline{margin:0;font-size:17px;font-weight:800;line-height:1.75;letter-spacing:.02em;color:var(--ink)}
 .caption{margin:0;font-size:12px;color:var(--ink-45);line-height:1.6}
 .brandline{margin:6px 0 8px;color:var(--blue);font-weight:800;font-size:16px;letter-spacing:.02em}
 .badge-tap{display:inline-block;margin:8px 0 10px;color:var(--blue);font-weight:900;font-size:14.5px;
   line-height:1.75;letter-spacing:.02em}
 .badge-tap span{background:linear-gradient(transparent 20%,rgba(255,255,255,.94) 20%);
   padding:0 4px}
-.top-lead{max-width:270px;margin-top:8px;font-size:15px;color:var(--ink-60);line-height:1.6}
 .screen.top-screen{position:relative;align-items:center;text-align:center;padding-top:10px}
 .top-main{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .top-hero{position:relative;width:100%;height:clamp(118px,25svh,170px);margin:0 0 22px;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;z-index:0}
@@ -75,8 +72,7 @@ button{font:inherit;cursor:pointer;color:inherit}
   .top-main{justify-content:flex-start}
   .screen.top-screen{padding-top:8px}
   .top-hero{height:118px;margin-bottom:14px}
-  .top-copy .h1{font-size:20px}
-  .top-copy .top-lead{font-size:14px}
+  .top-copy .top-headline{font-size:15.5px}
 }
 .intro-screen{padding-top:8px;justify-content:center}
 .intro-list{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
@@ -568,8 +564,7 @@ function renderTop(){
         </div>
         <div class="top-copy">
           <p class="brandline" style="margin:0 0 8px;line-height:1.4">仕事と家庭の<br/>モヤモヤ整理ワーク</p>
-          <h1 class="h1">家庭も仕事も大切にしたい<br/><span class="h1-sub">優先順位の付け方で悩むあなたへ</span></h1>
-          <p class="lead top-lead">一緒に気持ちを整理しませんか？</p>
+          <h1 class="top-headline">家庭も仕事も大切にしたい<br/>優先順位の付け方で悩むあなたへ<br/>一緒に気持ちを整理しませんか？</h1>
           <div class="stack" style="margin-top:18px">
             <button class="btn primary" id="start">START</button>
           </div>
