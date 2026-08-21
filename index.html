@@ -890,31 +890,15 @@ function surveyRow(v){
 function isUnknownValue(v){
   return /分からない/.test(v);
 }
-function cleanList(arr, drop=[]){
-  return (arr || []).filter(v=>v && !drop.includes(v) && !isUnknownValue(v));
-}
-function hasAny(arr, values){
-  return (arr || []).some(v=>values.includes(v));
-}
 function extractParts(){
-  const situationRaw = combinedAnswers(byKey("situation"));
-  const struggleRaw = combinedAnswers(byKey("struggle"));
-  const priorityRaw = combinedAnswers(byKey("priority"));
-  const wishRaw = combinedAnswers(byKey("wish"));
-  const releaseRaw = combinedAnswers(byKey("release"));
-  const criteriaRaw = combinedAnswers(byKey("criteria"));
-  const stepRaw = combinedAnswers(byKey("step"));
   return {
-    situation: cleanList(situationRaw),
-    struggle: cleanList(struggleRaw, ["強い限界は感じていないけれど、よく分からない"]),
-    priority: cleanList(priorityRaw),
-    wish: cleanList(wishRaw),
-    release: cleanList(releaseRaw),
-    criteria: cleanList(criteriaRaw),
-    step: cleanList(stepRaw),
-    noStruggle: struggleRaw.includes("強い限界は感じていないけれど、よく分からない"),
-    hold: stepRaw.includes("今日は何も決めず、温かいお茶でも飲んでとにかく休む"),
-    wantsTalk: stepRaw.includes("いまのモヤモヤをノートに自由に書いてみる"),
+    situation: combinedAnswers(byKey("situation"))[0] || "",
+    struggle: combinedAnswers(byKey("struggle"))[0] || "",
+    priority: combinedAnswers(byKey("priority")),
+    wish: combinedAnswers(byKey("wish"))[0] || "",
+    release: combinedAnswers(byKey("release")),
+    criteria: combinedAnswers(byKey("criteria")),
+    step: combinedAnswers(byKey("step"))[0] || "",
   };
 }
 
@@ -923,205 +907,62 @@ function buildDiagnosisShort(){
   return `整理メモができたよ。\n\nまずはここだけ、ふんわり眺めてみてね。`;
 }
 
-function joinMoyanList(arr){
-  const items = (arr || []).filter(Boolean);
-  if (!items.length) return "まだはっきりしないこと";
+/* 結果メモで回答をそのまま引用する際に、短く言い換えるためのラベル */
+const SHORT_LABEL = {
+  "子どもの急なお熱や通院で、予定が変わりがち":"子どもの急な発熱・通院",
+  "夫の「ごめん無理」で、いつも私が調整役に":"夫の「ごめん無理」で調整役に",
+  "働き方を変えたのに、やっぱりパンクしそう":"働き方を変えてもパンクしそう",
+  "毎日ギリギリで限界に近い":"毎日ギリギリで限界に近い",
+  "職場で「すみません」と謝り続けるのがつらい":"謝り続けるのがつらい",
+  "子どもは悪くないのに強く当たる自分に自己嫌悪":"子どもに強く当たる自己嫌悪",
+  "自分だけが犠牲になっている気がする":"自分だけが犠牲になっている気持ち",
+  "自分の時間や心の余裕がなく、クタクタ":"心の余裕がなくクタクタ",
+  "強い限界は感じていないけれど、よく分からない":"よく分からない気持ち",
+  "「申し訳ない」「私がしっかりしなきゃ」というプレッシャー":"しっかりしなきゃというプレッシャー",
+  "一人でぜんぶの調整や家事を背負い込むこと":"一人で抱え込んでいること",
+  "SNSや周りの人と比べて「私なんて」と自分を責める時間":"周りと比べて自分を責める時間",
+  "急な予定変更があっても、心が崩れない「ゆったりとした余白」":"崩れない余白",
+  "自分だけが我慢するんじゃなく、「家族で支え合えること」":"家族で支え合えること",
+  "自分の心と体の健康をすり減らさない「無理のないペース」":"無理のないペース",
+  "「申し訳ない」と思わずに気持ちよく働ける環境":"罪悪感なく働ける環境",
+  "いまのモヤモヤをノートに自由に書いてみる":"モヤモヤを書き出してみること",
+  "今の暮らしの中で「これ、やめてみようかな」を探してみる":"何かをやめられないか探すこと",
+  "今日は何も決めず、温かいお茶でも飲んでとにかく休む":"何も決めず、まず休むこと",
+};
+function shortLabel(text){ return SHORT_LABEL[text] || text; }
+function shortLabelList(arr){ return (arr || []).filter(Boolean).map(shortLabel); }
+function quoteWrap(text){ return text ? `「${text}」` : ""; }
+/* 複数回答を「A」と「B」、それから「C」のように、項目ごとに個別の「」で引用してつなぐ */
+function joinQuoted(arr){
+  const items = (arr || []).filter(Boolean).map(quoteWrap);
+  if (!items.length) return "";
   if (items.length === 1) return items[0];
   if (items.length === 2) return `${items[0]}と${items[1]}`;
   return `${items.slice(0,-1).join("、")}、それから${items[items.length-1]}`;
 }
 
-/* 結果メモで「あなたは〜と答えていたね」と事実を短く言い換えるための短縮ラベル */
-const SHORT_LABEL = {
-  "毎日ギリギリで限界に近い":"毎日ギリギリで限界に近い",
-  "職場で「すみません」と謝り続けるのがつらい":"謝り続けるのがつらい",
-  "自分だけが犠牲になっている気がする":"「なんで私ばかり」という気持ち",
-  "自分の時間や心の余裕がなく、クタクタ":"心も体もクタクタな状態",
-  "「申し訳ない」と思わずに気持ちよく働ける環境":"罪悪感なく続けられる働き方",
-  "ママ業をお休みして、自分に戻れる時間":"自分に戻れる時間",
-  "稼いでいるという安心感や、将来へのゆとり":"自分で稼ぐ安心感",
-  "仕事を辞めたいわけじゃないのに、続けるのがつらい":"働き続けたい気持ち",
-  "まずは心と体をゆっくり休ませたい":"まず休みたい気持ち",
-  "一人でぜんぶの調整や家事を背負い込むこと":"一人で抱え込んでいること",
-};
-function shortLabel(text){ return SHORT_LABEL[text] || text; }
-function shortLabelList(arr){ return (arr || []).filter(Boolean).map(shortLabel); }
-function factFrom(arr, values){
-  const hit = (arr || []).find(v=>values.includes(v));
-  return hit ? shortLabel(hit) : "";
-}
-
-function resultSignals(p){
-  return {
-    guilt: hasAny(p.struggle, ["職場で「すみません」と謝り続けるのがつらい"]),
-    unfair: hasAny(p.struggle, ["自分だけが犠牲になっている気がする"]),
-    depleted: hasAny(p.struggle, ["自分の時間や心の余裕がなく、クタクタ"]) || hasAny(p.situation, ["毎日ギリギリで限界に近い"]),
-    valuesGuiltFreeSystem: hasAny(p.priority, ["「申し訳ない」と思わずに気持ちよく働ける環境"]),
-    valuesOwnTime: hasAny(p.priority, ["ママ業をお休みして、自分に戻れる時間"]),
-    valuesIncome: hasAny(p.priority, ["稼いでいるという安心感や、将来へのゆとり"]),
-    wishKeepConnected: hasAny(p.wish, ["仕事を辞めたいわけじゃないのに、続けるのがつらい"]),
-    wishRestFirst: hasAny(p.wish, ["まずは心と体をゆっくり休ませたい"]),
-    releaseAlone: hasAny(p.release, ["一人でぜんぶの調整や家事を背負い込むこと"]),
-  };
-}
-
-function buildReceiptText(p){
-  const s = resultSignals(p);
-  if (p.hold) {
-    return "今は休む・整えるを選んだんだね。ここまで見られたら十分だよ。";
-  }
-  if (p.noStruggle) {
-    return "今は、強い不安や後回しがあるわけではなさそうだね。無理に悩みを作らなくていいよ。";
-  }
-  if (s.guilt && s.depleted) {
-    return "そういう気持ちを抱えていたんだね。謝りながら我慢するのも、体力も心もすり減るよね。";
-  }
-  if (s.unfair && s.valuesGuiltFreeSystem) {
-    return "そっか。自分ばかりが調整役になっている感じ、しんどいよね。罪悪感なく続けたい気持ち、よくわかるよ。";
-  }
-  if (s.valuesIncome && s.wishKeepConnected) {
-    return "そういう気持ちを抱えていたんだね。収入も、つながりも、どちらも大事だから迷うんだね。";
-  }
-  return "そういう気持ちを抱えていたんだね。今の働き方をどうするか、簡単に決められないところにいるんだね。";
-}
-
-function buildVisibleText(p){
-  const s = resultSignals(p);
-  if (p.hold) {
-    return "今は、何かを始めるより、いったん置いておきたい状態に近そうだよ。";
-  }
-  if (p.noStruggle) {
-    return "後回しや不安を強く感じていないなら、今の暮らしで何が守れているのかを見る方が合っていそうだよ。";
-  }
-  if (s.guilt && s.depleted) {
-    return "子どもとの時間も仕事も大切にしたいから、両方に全力を注げないもどかしさが重なっているのかもしれないね。";
-  }
-  if (s.unfair && s.valuesGuiltFreeSystem) {
-    return "自分ばかりが調整役になっている不公平さと、罪悪感なく続けたい気持ちが、両方あるみたいだよ。";
-  }
-  if (s.depleted && s.wishRestFirst) {
-    return "HPがゼロに近いのに、休むことを後回しにしてしまっている感じがあるよ。";
-  }
-  if (s.valuesOwnTime && s.releaseAlone) {
-    return "自分だけの時間が欲しい気持ちと、1人で抱え込んでいる状況が、重なっていそうだよ。";
-  }
-  if (s.valuesIncome && s.wishKeepConnected) {
-    return "収入も、社会とのつながりも手放したくない気持ちが、決断を難しくしていそうだよ。";
-  }
-  if (p.priority.length || p.wish.length) {
-    return `${joinMoyanList([...p.priority, ...p.wish].slice(0, 2))}あたりから、今の暮らしを見てみてもよさそうだよ。`;
-  }
-  return "まだはっきりした言葉にはなっていないけれど、少し立ち止まって考えたい感じはありそうだよ。";
-}
-
+/* 持ち帰るメモ：Q1(状況)×Q2(気持ち) の実際の回答をそのまま引用し、状況の共感＋感情の全肯定を返す */
 function buildDeepInsight(p){
-  const s = resultSignals(p);
-
-  if (p.hold) {
-    return {
-      key:"今日は決めない、も選択肢に入れていい。",
-      body:"働き方の話は、答えを出すだけが整理じゃないよ。\n今日のメモを一度置いて、また気になったときに見直せたら十分だよ。",
-      prompt:"今日は、ここまでにしておく？"
-    };
-  }
-
-  if (p.noStruggle) {
-    return {
-      key:"今は無理に理由を探さなくていい。",
-      body:"強いモヤモヤがないなら、今の暮らしで何が守れているのかを見ておく方が、次に活きるかもしれないよ。",
-      prompt:"自分で見てみて、意外だったところはある？"
-    };
-  }
-
-  if (s.guilt && s.depleted) {
-    const struggleFact = factFrom(p.struggle, ["職場で「すみません」と謝り続けるのがつらい"]);
-    const depletedFact = factFrom(p.struggle, ["自分の時間や心の余裕がなく、クタクタ"]) || factFrom(p.situation, ["毎日ギリギリで限界に近い"]);
-    return {
-      key:`あなたは「${struggleFact}」と、「${depletedFact}」の両方を答えていたね。`,
-      body:"もしかすると、謝りながら我慢を重ねること自体が、あなたから休む許可を奪っているのかもしれないよ。\n心が空っぽになりそうなら、まず手放したいのは「無理な我慢」の方だよ。",
-      prompt:"最近、いちばん「すみません」を言ったのはどんな場面？"
-    };
-  }
-
-  if (s.unfair && s.valuesGuiltFreeSystem) {
-    const struggleFact = factFrom(p.struggle, ["自分だけが犠牲になっている気がする"]);
-    const priorityFact = factFrom(p.priority, ["「申し訳ない」と思わずに気持ちよく働ける環境"]);
-    return {
-      key:`あなたは「${struggleFact}」と、「${priorityFact}」を大事にしたい気持ちの両方を答えていたね。`,
-      body:"もしかすると、今の不公平さが変わらない限り、罪悪感のない働き方も遠く感じてしまうのかもしれないね。\n『なんで私ばかり』は、わがままじゃなくて、ずっと1人で調整してきたことへの自然な反応だよ。",
-      prompt:"今の調整の中で、誰かに分けられそうな部分はある？"
-    };
-  }
-
-  if (s.depleted && s.wishRestFirst) {
-    const depletedFact = factFrom(p.struggle, ["自分の時間や心の余裕がなく、クタクタ"]) || factFrom(p.situation, ["毎日ギリギリで限界に近い"]);
-    const wishFact = factFrom(p.wish, ["まずは心と体をゆっくり休ませたい"]);
-    return {
-      key:`あなたは「${depletedFact}」と、「${wishFact}」の両方を答えていたね。`,
-      body:"もしかすると、次を決める前に、まずエネルギーを取り戻すことの方が本当に必要なのかもしれないよ。\n何かを選ぶにも、体力と心の余裕がいるからね。",
-      prompt:"今日、少しだけ休むとしたら何をする？"
-    };
-  }
-
-  if (s.valuesOwnTime && s.releaseAlone) {
-    const priorityFact = factFrom(p.priority, ["ママ業をお休みして、自分に戻れる時間"]);
-    const releaseFact = factFrom(p.release, ["一人でぜんぶの調整や家事を背負い込むこと"]);
-    return {
-      key:`あなたは「${priorityFact}」がほしい気持ちと、「${releaseFact}」の両方を答えていたね。`,
-      body:"もしかすると、一人で背負う場面を少し減らせたら、自分に戻れる時間も自然と生まれてくるのかもしれないよ。",
-      prompt:"自分だけの時間、最後に持てたのはいつだった？"
-    };
-  }
-
-  if (s.valuesIncome && s.wishKeepConnected) {
-    const priorityFact = factFrom(p.priority, ["稼いでいるという安心感や、将来へのゆとり"]);
-    const wishFact = factFrom(p.wish, ["仕事を辞めたいわけじゃないのに、続けるのがつらい"]);
-    return {
-      key:`あなたは「${priorityFact}」と、「${wishFact}」の両方を答えていたね。`,
-      body:"もしかすると、辞めるか続けるかより、その両方を守れる形をまだ見つけられていないだけなのかもしれないよ。",
-      prompt:"収入とつながり、今はどちらの気持ちが強い？"
-    };
-  }
-
-  const facts = shortLabelList([...p.priority, ...p.wish]);
-  if (facts.length) {
-    return {
-      key:`あなたは${joinMoyanList(facts.slice(0, 3))}を大事にしたいと答えていたね。`,
-      body:"もしかすると、そのどれも手放したくないから、簡単には決められずにいるだけなのかもしれないよ。",
-      prompt:"自分の言葉で言うなら、どんな感じかな？"
-    };
-  }
+  const situationFact = quoteWrap(shortLabel(p.situation)) || "「毎日のいろんなこと」";
+  const struggleFact = quoteWrap(shortLabel(p.struggle)) || "「言葉にならないモヤモヤ」";
   return {
-    key:"辞めるか続けるかより、暮らしの変化があっても大事にしたいものを守れるかを探しているのかも。",
-    body:"今の迷いは、正解を選べない弱さではなく、仕事も家族も、どちらも大切にしたいから出ているものにも見えるよ。",
-    prompt:"自分の言葉で言うなら、どんな感じかな？"
+    key:`${situationFact}の中、${struggleFact}でいっぱいになりながら、今日までよく走ってきたね。`,
+    body:"誰にも気づかれないところで必死に頑張ってきたあなたの心は、もう十分すぎるくらい限界まで耐えていたんだよ。"
   };
 }
 
-function buildNextText(p, insight){
-  const s = resultSignals(p);
-  if (p.hold) {
-    return "今日はここまででもいいよ。\nまた気になったときに、このメモを見直せば大丈夫。";
-  }
-  if (p.noStruggle) {
-    return "悩みを探さなくてもいいよ。\n今の暮らしで守れているものを、一つだけ言葉にしてみよう。";
-  }
-  if (s.guilt && s.depleted) {
-    return "次に「すみません」と言いそうになったら、「ありがとうございます」に変えてみようか。";
-  }
-  if (s.unfair && s.valuesGuiltFreeSystem) {
-    return "今すぐ仕組みを変えなくていいよ。\nまずは、今の調整の中で誰かに分けられそうな部分を一つだけ書き出してみよう。";
-  }
-  if (s.depleted && s.wishRestFirst) {
-    return "今日、何も決めなくていいよ。\nまずは、5分だけでも座って休む時間を取ってみよう。";
-  }
-  if (s.valuesOwnTime && s.releaseAlone) {
-    return "全部を1人で抱えなくていいよ。\n今の気持ちを、まず誰か一人に話してみることから始めてみよう。";
-  }
-  if (s.valuesIncome && s.wishKeepConnected) {
-    return "今すぐ答えを出さなくていいよ。\nまずは、収入とつながり、今はどちらが大事か、自分の中で一度言葉にしてみよう。";
-  }
-  return `${insight.prompt}\n答えがすぐ出なくても、今日はここまでで大丈夫だよ。`;
+/* どうして迷うのか：Q3(大事にしたいこと)×Q5(手放したいこと) から、本音の肯定＋思い込みの解除を返す */
+function buildVisibleText(p){
+  const priorityFact = joinQuoted(shortLabelList(p.priority)) || "「大事にしたいこと」";
+  const releaseFact = joinQuoted(shortLabelList(p.release)) || "「抱えていること」";
+  return `あなたが一番大切にしたいのは${priorityFact}だよね。\nそれなのに身動きが取れなくなってしまうのは、${releaseFact}を一人で背負おうとしているから。\n頼り方が分からずに抱え込んでしまうのは、あなたが真面目で優しいからだよ。自分を責める必要はどこにもないんだよ。`;
+}
+
+/* 次に見ること：Q6(譲れない基準)×Q7(今日の一歩) から、未来の基準＋今日の小さな一歩を返す */
+function buildNextText(p){
+  const criteriaFact = joinQuoted(shortLabelList(p.criteria)) || "「大事にしたい基準」";
+  const stepFact = quoteWrap(shortLabel(p.step)) || "「今のあなたのペース」";
+  return `${criteriaFact}を守るために、何かを新しく増やす必要はないよ。\nまずは今日、${stepFact}から試してみてね。それだけで十分、素晴らしい一歩だよ。`;
 }
 
 function buildMemoBlocks(p){
@@ -1129,7 +970,7 @@ function buildMemoBlocks(p){
   return [
     { title:"持ち帰るメモ", key:insight.key, body:insight.body, kind:"core" },
     { title:"どうして迷うのか", body:buildVisibleText(p), kind:"visible" },
-    { title:"次に見ること", body:buildNextText(p, insight), kind:"reflect" },
+    { title:"次に見ること", body:buildNextText(p), kind:"reflect" },
   ];
 }
 
