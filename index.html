@@ -901,7 +901,7 @@ function buildDiagnosisShort(){
 /* 結果メモで回答をそのまま引用する際に、短く言い換えるためのラベル */
 const SHORT_LABEL = {
   "子どもの急なお熱や通院で、予定が変わりがち":"子どもの急な発熱・通院",
-  "夫の「ごめん無理」で、いつも私が調整役に":"夫の「ごめん無理」で調整役に",
+  "夫の「ごめん無理」で、いつも私が調整役に":"夫の都合でいつも調整役に",
   "働き方を変えたのに、やっぱりパンクしそう":"働き方を変えてもパンクしそう",
   "毎日ギリギリで限界に近い":"毎日ギリギリで限界に近い",
   "職場で「すみません」と謝り続けるのがつらい":"謝り続けるのがつらい",
@@ -916,7 +916,7 @@ const SHORT_LABEL = {
   "自分だけが我慢するんじゃなく、「家族で支え合えること」":"家族で支え合えること",
   "自分の心と体の健康をすり減らさない「無理のないペース」":"無理のないペース",
   "「申し訳ない」と思わずに気持ちよく働ける環境":"罪悪感なく働ける環境",
-  "いまのモヤモヤをノートに自由に書いてみる":"モヤモヤを書き出してみること",
+  "いまのモヤモヤをノートに自由に書いてみる":"モヤモヤを書き出すこと",
   "今の暮らしの中で「これ、やめてみようかな」を探してみる":"何かをやめられないか探すこと",
   "今日は何も決めず、温かいお茶でも飲んでとにかく休む":"何も決めず、まず休むこと",
 };
@@ -955,7 +955,7 @@ function buildDeepInsight(p){
   const struggleInsight = STRUGGLE_INSIGHT[p.struggle] || "その気持ちを抱えているだけで、もう十分頑張っている証だよ。";
   const wishInsight = WISH_INSIGHT[p.wish] || "";
   return {
-    key:`${situationFact}の中、${struggleFact}でいっぱいになりながら、今日までよく走ってきたね。`,
+    key:`${situationFact}。${struggleFact}を抱えながら、今日までよく走ってきたね。`,
     body: wishInsight ? `${struggleInsight}\n${wishInsight}` : struggleInsight
   };
 }
@@ -973,7 +973,7 @@ function buildVisibleText(p){
   const releaseFact = joinQuoted(shortLabelList(p.release)) || "「抱えていること」";
   const releaseInsight = p.release.map(v=>RELEASE_INSIGHT[v]).filter(Boolean)[0]
     || "頼り方が分からずに抱え込んでしまうのは、あなたが真面目で優しいからだよ。自分を責める必要はどこにもないんだよ。";
-  return `あなたが一番大切にしたいのは${priorityFact}だよね。\nそれなのに身動きが取れなくなってしまうのは、${releaseFact}を一人で背負おうとしているから。\n${releaseInsight}`;
+  return `あなたが一番大切にしたいのは${priorityFact}だよね。\nそれなのに身動きが取れなくなってしまうのは、${releaseFact}を、全部自分で引き受けようとしているから。\n${releaseInsight}`;
 }
 
 /* Q6(譲れない基準)ごとの解釈 */
@@ -989,7 +989,7 @@ function buildNextText(p){
   const stepFact = quoteWrap(shortLabel(p.step)) || "「今のあなたのペース」";
   const criteriaInsight = p.criteria.map(v=>CRITERIA_INSIGHT[v]).filter(Boolean)[0]
     || "何かを新しく増やす必要はないよ。";
-  return `${criteriaFact}を大事にしたいんだね。\n${criteriaInsight}\nまずは今日、${stepFact}から試してみてね。それだけで十分、素晴らしい一歩だよ。`;
+  return `${criteriaFact}を大事にしたいんだね。\n${criteriaInsight}\nまずは今日、${stepFact}を試してみてね。それだけで十分、素晴らしい一歩だよ。`;
 }
 
 function buildMemoBlocks(p){
