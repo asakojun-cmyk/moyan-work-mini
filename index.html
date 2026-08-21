@@ -451,6 +451,23 @@ const OTHER = "そのほか（自由に書く）";
 const state = { screen:"top", introStep:0, i:0, answers:{}, freeOpen:{}, freeText:{}, survey:{ memoMatch:null }, tracked:{} };
 const TRACKABLE_EVENTS = new Set(["work_start","questions_complete","memo_view","memo_copy","dm_click","next_choice_self","next_choice_stop","next_choice_talk"]);
 
+/* 途中保存：スマホの再読み込みで回答が消えないよう、画面が変わるたびにlocalStorageへ保存する */
+const STORAGE_KEY = "moyanWorkMiniState_v1";
+function saveState(){
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      screen: state.screen, introStep: state.introStep, i: state.i,
+      answers: state.answers, freeOpen: state.freeOpen, freeText: state.freeText, survey: state.survey,
+    }));
+  } catch(e) {}
+}
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
 function root(){ return document.getElementById("app"); }
 function trackEvent(name, once=false){
   if (!TRACKABLE_EVENTS.has(name)) return;
@@ -580,6 +597,7 @@ function renderTop(){
 }
 
 function renderIntro(){
+  saveState();
   clearIntroTimer();
   const step = Math.min(state.introStep, INTRO_MESSAGES.length - 1);
   const isLast = step === INTRO_MESSAGES.length - 1;
@@ -626,6 +644,7 @@ function currentSelection(item){
 }
 
 function renderQuestion(){
+  saveState();
   const item = QUESTIONS[state.i];
   const sel = currentSelection(item);
   const freeVal = state.freeText[item.key] || "";
@@ -684,6 +703,7 @@ function renderQuestion(){
     const ready = hasChip || hasFree;
     nextBtn.disabled = !ready;
     hintEl.style.opacity = ready ? "0" : "1";
+    saveState();
   }
 
   const chipButtons = Array.from(document.getElementById("chips").querySelectorAll("[data-chip]"));
@@ -793,6 +813,8 @@ function playAckThenAdvance(item){
 }
 
 function renderSorting(){
+  state.screen = "sorting";
+  saveState();
   root().innerHTML = `
     ${header()}
     <section class="screen center sorting-screen">
@@ -1022,6 +1044,7 @@ function miniChatRow(key, item){
 
 function renderSummary(){
   state.screen = "summary";
+  saveState();
   trackEvent("memo_view", true);
   const diagnosisText = buildDiagnosisShort();
   const p = extractParts();
@@ -1090,7 +1113,7 @@ function renderSummary(){
           <div>
             <p class="owner-label">必要なら、このメモをやさしく受け取ってくれる相手</p>
             <p class="owner-name">ちゃん｜転勤族妻・3児の母 / キャリコン学習中</p>
-            <p class="owner-text">私自身も、暮らしの変化に合わせて何度も仕事や時間を調整してきました。<br><br>今回の整理メモを見ながら、何に迷っているか・何を大事にしたいか・次に何を考えるとよさそうかを、30分一緒に整理します。<br><br>転職を勧めたり、答えを決めたりする場ではありません。</p>
+            <p class="owner-text">私自身も、暮らしの変化に合わせて何度も仕事や時間を調整してきました。<br><br>今回の整理メモを見ながら、何に迷っているか・何を大事にしたいか・次に何を考えるとよさそうかを、30分一緒に整理します。<br><br>転職を勧めたり、答えを決めたりする場ではありません。DMは私だけが読みます。売り込みはしません。</p>
             <p class="owner-handle">${X_HANDLE}</p>
           </div>
         </div>
@@ -1258,7 +1281,28 @@ function escapeHtml(s){
 }
 function escapeAttr(s){ return escapeHtml(s).replace(/`/g,"&#96;"); }
 
-renderTop();
+/* 途中保存の復元：再読み込みしても、答えていた途中から再開できるようにする */
+function boot(){
+  const saved = loadState();
+  if (saved && saved.screen === "q" && QUESTIONS[saved.i]) {
+    Object.assign(state, saved);
+    renderQuestion();
+    return;
+  }
+  if (saved && saved.screen === "intro") {
+    Object.assign(state, saved);
+    renderIntro();
+    return;
+  }
+  if (saved && (saved.screen === "sorting" || saved.screen === "summary")) {
+    Object.assign(state, saved);
+    state.screen = "summary";
+    renderSummary();
+    return;
+  }
+  renderTop();
+}
+boot();
 </script>
 </body>
 </html>
