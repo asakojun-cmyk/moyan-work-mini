@@ -54,7 +54,8 @@ button{font:inherit;cursor:pointer;color:inherit}
 .screen.center{justify-content:center;text-align:center;align-items:center}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
-.top-headline{margin:0;font-size:17px;font-weight:800;line-height:1.75;letter-spacing:.02em;color:var(--ink)}
+.top-title{margin:0 0 14px;font-size:25px;font-weight:900;line-height:1.4;letter-spacing:.02em;color:var(--ink)}
+.top-headline{margin:0;font-size:14px;font-weight:700;line-height:1.9;letter-spacing:.02em;color:var(--ink-60)}
 .caption{margin:0;font-size:12px;color:var(--ink-45);line-height:1.6}
 .brandline{margin:6px 0 8px;color:var(--blue);font-weight:800;font-size:16px;letter-spacing:.02em}
 .badge-tap{display:inline-block;margin:8px 0 10px;color:var(--blue);font-weight:900;font-size:14.5px;
@@ -72,7 +73,8 @@ button{font:inherit;cursor:pointer;color:inherit}
   .top-main{justify-content:flex-start}
   .screen.top-screen{padding-top:8px}
   .top-hero{height:118px;margin-bottom:14px}
-  .top-copy .top-headline{font-size:15.5px}
+  .top-copy .top-title{font-size:22px}
+  .top-copy .top-headline{font-size:13px}
 }
 .intro-screen{padding-top:8px;justify-content:center}
 .intro-list{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
@@ -563,8 +565,8 @@ function renderTop(){
           <img class="moyan top-moyan" src="${CHAR}" alt="モヤンちゃん" />
         </div>
         <div class="top-copy">
-          <p class="brandline" style="margin:0 0 8px;line-height:1.4">仕事と家庭の<br/>モヤモヤ整理ワーク</p>
-          <h1 class="top-headline">家庭も仕事も大切にしたい<br/>優先順位の付け方で悩むあなたへ<br/>一緒に気持ちを整理しませんか？</h1>
+          <h1 class="top-title">仕事と家庭の<br/>モヤモヤ整理ワーク</h1>
+          <p class="top-headline">家庭も仕事も大切にしたい<br/>優先順位の付け方で悩むあなたへ<br/>一緒に気持ちを整理しませんか？</p>
           <div class="stack" style="margin-top:18px">
             <button class="btn primary" id="start">START</button>
           </div>
