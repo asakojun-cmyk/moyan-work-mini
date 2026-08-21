@@ -63,20 +63,23 @@ button{font:inherit;cursor:pointer;color:inherit}
   line-height:1.75;letter-spacing:.02em}
 .badge-tap span{background:linear-gradient(transparent 20%,rgba(255,255,255,.94) 20%);
   padding:0 4px}
-.top-lead{max-width:270px;margin-top:2px;font-size:12px;line-height:1.85}
+.top-lead{max-width:270px;margin-top:8px;font-size:15px;color:var(--ink-60);line-height:1.6}
+.btn-start{display:inline-flex;align-items:center;justify-content:center;width:66.6%;max-width:280px;
+  padding:14px 0;font-family:var(--font-round);font-size:17px;font-weight:800;letter-spacing:.02em;
+  color:#fff;background:#2b3a55;border:none;border-radius:30px;cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);transition:transform .15s var(--ease)}
+.btn-start:active{transform:scale(.97)}
 .screen.top-screen{position:relative;align-items:center;text-align:center;padding-top:10px}
 .top-main{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .top-hero{position:relative;width:100%;height:clamp(118px,25svh,170px);margin:0 0 10px;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;z-index:0}
-.top-hero .top-moyan{width:clamp(104px,32vw,136px);margin:0 auto}
+.top-hero .top-moyan{width:100px;margin:0 auto}
 .top-copy{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 @media (max-height:620px){
   .top-main{justify-content:flex-start}
   .screen.top-screen{padding-top:8px}
   .top-hero{height:118px;margin-bottom:6px}
-  .top-hero .top-moyan{width:108px}
   .top-copy .h1{font-size:20px}
-  .top-copy .badge-tap{margin:6px 0 8px}
-  .top-copy .top-lead{font-size:11.5px;line-height:1.75}
+  .top-copy .top-lead{font-size:14px}
 }
 .intro-screen{padding-top:8px;justify-content:center}
 .intro-list{display:flex;flex-direction:column;gap:10px;margin:8px 0 14px}
@@ -564,13 +567,13 @@ function renderTop(){
     <section class="screen top-screen">
       <div class="top-main">
         <div class="top-hero float">
-          <img class="moyan lg top-moyan" src="${CHAR}" alt="モヤンちゃん" />
+          <img class="moyan top-moyan" src="${CHAR}" alt="モヤンちゃん" />
         </div>
         <div class="top-copy">
-          <h1 class="h1">モヤモヤ整理ワーク<br/><span class="h1-sub">家庭も仕事も大切にしたいあなたへ</span></h1>
-          <p class="lead top-lead">仕事と家族を優先しちゃって、<br/>自分は後回しになりがち。<br/>小さなモヤモヤを一緒に整理しませんか？</p>
-          <div class="stack" style="margin-top:18px">
-            <button class="btn primary" id="start">START</button>
+          <h1 class="h1">家庭も仕事も大切にしたい<br/>優先順位の付け方で悩むあなたへ</h1>
+          <p class="lead top-lead">一緒に気持ちを整理しませんか？</p>
+          <div style="display:flex;justify-content:center;width:100%;margin-top:18px">
+            <button class="btn-start" id="start">START</button>
           </div>
         </div>
       </div>
