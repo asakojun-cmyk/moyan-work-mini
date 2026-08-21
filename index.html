@@ -1225,9 +1225,18 @@ function renderSummary(){
         </div>
       </div>
 
+      <div class="stack" style="margin:6px auto 0">
+        <button class="btn ghost" id="restart" style="align-self:center">はじめから答え直す</button>
+      </div>
       <p class="footer-note">モヤンはAIです。病気の診断や治療を行うものではありません。</p>
     </section>
   `;
+
+  document.getElementById("restart").onclick = ()=>{
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    Object.assign(state, { screen:"top", introStep:0, i:0, answers:{}, freeOpen:{}, freeText:{}, survey:{ memoMatch:null }, tracked:{} });
+    renderTop();
+  };
 
   bindSurvey("q-match", (v)=>{
     state.survey.memoMatch = v;
