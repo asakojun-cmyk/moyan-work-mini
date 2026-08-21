@@ -440,7 +440,7 @@ const QUESTIONS = [
 
 const OTHER = "そのほか（自由に書く）";
 const state = { screen:"top", introStep:0, i:0, answers:{}, freeOpen:{}, freeText:{}, survey:{ memoMatch:null }, tracked:{} };
-const TRACKABLE_EVENTS = new Set(["work_start","questions_complete","memo_view","memo_copy","dm_click"]);
+const TRACKABLE_EVENTS = new Set(["work_start","questions_complete","memo_view","memo_copy","dm_click","next_choice_self","next_choice_stop","next_choice_talk"]);
 
 function root(){ return document.getElementById("app"); }
 function trackEvent(name, once=false){
@@ -1168,6 +1168,7 @@ function bindNextChoice(){
       btn.classList.add("on");
       const key = btn.dataset.choice;
       Object.entries(panels).forEach(([k,el])=>{ if (el) el.classList.toggle("open", k===key); });
+      trackEvent(`next_choice_${key}`, true);
     };
   });
 }
