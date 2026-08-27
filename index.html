@@ -300,7 +300,7 @@ textarea.answer::placeholder{color:var(--ink-45)}
 <div class="app" id="app">
   <div id="screenRoot" style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column"></div>
   <footer class="global-footer">
-    <a class="global-footer-link" href="https://www.wamamamalife.com/">← はじめのページに戻る</a>
+    <a class="global-footer-link" id="globalBack" href="https://www.wamamamalife.com/">← 元のページに戻る</a>
   </footer>
 </div>
 
@@ -1386,6 +1386,19 @@ function boot(){
   renderTop();
 }
 boot();
+
+/* フッターの「戻る」：来た画面が分かる時は一つ前へ、直接開かれた時はTOPへ逃がす */
+(function(){
+  const backLink = document.getElementById("globalBack");
+  if (!backLink) return;
+  backLink.addEventListener("click", (e)=>{
+    if (document.referrer && history.length > 1){
+      e.preventDefault();
+      history.back();
+    }
+    /* referrerがない場合はhrefのTOPページへそのまま遷移させる */
+  });
+})();
 </script>
 </body>
 </html>
