@@ -29,7 +29,7 @@
 <meta name="twitter:image" content="https://asakojun-cmyk.github.io/moyan-work-mini/og.png" />
 <style>
 :root{
-  --cream:#fffdf2; --sky:#e8f5ff; --ink:#000030;
+  --cream:#fffdf2; --sky:#e8f5ff; --ink:#000030; --marker:#ffdd7a;
   --blue:#5b6b8c; --white:#fff; --ink-60:rgba(0,0,48,.6); --ink-45:rgba(0,0,48,.4);
   --line:rgba(91,107,140,.16); --button-line:rgba(91,107,140,.36);
   --soft-shadow:0 10px 28px rgba(91,107,140,.1);
@@ -179,13 +179,16 @@ textarea.answer::placeholder{color:var(--ink-45)}
 
 .composer{margin-top:auto;display:flex;flex-direction:column;gap:10px;padding-top:12px}
 .chips-disabled{opacity:.45;pointer-events:none}
-.ack-screen{justify-content:flex-start;padding-top:8px}
+.ack-screen{justify-content:flex-start;padding-top:8px;cursor:pointer}
+.tap-hint{text-align:center;font-size:12px;font-weight:700;color:var(--ink-45);margin:2px 0 0;
+  animation:tapHintPulse 1.8s ease-in-out infinite}
+@keyframes tapHintPulse{0%,100%{opacity:.5}50%{opacity:1}}
 
 /* --- 整理メモ画面 --- */
 .diagnosis{margin-bottom:10px}
 .diagnosis-text{font-size:15.5px;line-height:2.05}
 .memo-block-title{display:inline-block;color:var(--blue);font-weight:900;font-size:13.5px;letter-spacing:.02em}
-.memo-key{background:linear-gradient(180deg,transparent 58%,var(--cream) 58%);font-weight:800;
+.memo-key{background:linear-gradient(180deg,transparent 58%,var(--marker) 58%);font-weight:800;
   padding:0 1px;border-radius:2px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .detail-toggle{display:block;width:auto;align-self:center;margin:2px auto 12px;background:transparent;border:none;
   color:var(--blue);font-weight:800;font-size:13px;padding:6px 10px}
@@ -263,6 +266,10 @@ textarea.answer::placeholder{color:var(--ink-45)}
 .owner-text{margin:0;font-size:12px;color:var(--ink-60);line-height:1.65}
 .owner-handle{margin:5px 0 0;font-size:12px;color:var(--blue);font-weight:900}
 .footer-note{font-size:11px;color:var(--ink-45);text-align:center;line-height:1.6;padding:4px 8px 0}
+.global-footer{flex:none;text-align:center;padding:8px 18px 14px}
+.global-footer-link{display:inline-block;font-size:12px;font-weight:700;color:var(--ink-45);
+  text-decoration:none;padding:6px 10px}
+.global-footer-link:active{color:var(--blue)}
 .sorting-message{min-height:246px;margin:12px 0 0;color:var(--blue);font-size:15px;font-weight:700;line-height:1.95;white-space:pre-line;text-align:center}
 .sorting-message::after{content:"";display:inline-block;width:2px;height:1.15em;margin-left:3px;vertical-align:-.18em;background:var(--blue);animation:caretBlink .85s steps(1) infinite}
 .sorting-message.done::after{display:none}
@@ -290,7 +297,12 @@ textarea.answer::placeholder{color:var(--ink-45)}
 </style>
 </head>
 <body>
-<div class="app" id="app"></div>
+<div class="app" id="app">
+  <div id="screenRoot" style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column"></div>
+  <footer class="global-footer">
+    <a class="global-footer-link" href="https://www.wamamamalife.com/">← はじめのページに戻る</a>
+  </footer>
+</div>
 
 <script>
 /* ==== モヤンちゃんの見た目・動き（スタンプは使わず、本人の表情・動きで「聞いてるよ」を伝える） ==== */
@@ -475,7 +487,7 @@ function loadState(){
   } catch(e) { return null; }
 }
 
-function root(){ return document.getElementById("app"); }
+function root(){ return document.getElementById("screenRoot"); }
 function trackEvent(name, once=false){
   if (!TRACKABLE_EVENTS.has(name)) return;
   if (once && state.tracked[name]) return;
@@ -798,7 +810,7 @@ function playAckThenAdvance(item){
   const ackText = buildAckText(item);
   root().innerHTML = `
     ${header()}
-    <section class="screen ack-screen">
+    <section class="screen ack-screen" id="ackScreen">
       <div class="qtop">
         <img class="moyan md ${reactionClass}" id="qmoyan" src="${CHAR}" alt="" style="margin:2px 0 8px" />
       </div>
@@ -806,17 +818,27 @@ function playAckThenAdvance(item){
         <span class="who">モヤン：</span>
         <span class="reply-text">${escapeHtml(ackText)}</span>
       </div>
+      <p class="tap-hint">タップで次へ</p>
     </section>
   `;
   const moyanImg = document.getElementById("qmoyan");
   moyanImg.addEventListener("animationend", ()=>moyanImg.classList.remove(reactionClass), { once:true });
   armBlink();
-  setTimeout(()=>{
+
+  let advanced = false;
+  const advance = ()=>{
+    if (advanced) return;
+    advanced = true;
     transitionTo(()=>{
       if (state.i < QUESTIONS.length - 1){ state.i += 1; renderQuestion(); }
       else { trackEvent("questions_complete", true); renderSorting(); }
     });
-  }, 2000);
+  };
+  /* 文字数に応じて読む時間を確保しつつ、タップでいつでも先に進める */
+  const readDelay = Math.min(6000, Math.max(2500, ackText.length * 110));
+  const timer = setTimeout(advance, readDelay);
+  const ackScreen = document.getElementById("ackScreen");
+  if (ackScreen) ackScreen.addEventListener("click", ()=>{ clearTimeout(timer); advance(); }, { once:true });
 }
 
 function renderSorting(){
