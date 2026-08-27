@@ -268,7 +268,7 @@ textarea.answer::placeholder{color:var(--ink-45)}
 .footer-note{font-size:11px;color:var(--ink-45);text-align:center;line-height:1.6;padding:4px 8px 0}
 .global-footer{flex:none;text-align:center;padding:8px 18px 14px}
 .global-footer-link{display:inline-block;font-size:12px;font-weight:700;color:var(--ink-45);
-  text-decoration:none;padding:6px 10px}
+  text-decoration:none;padding:6px 10px;background:none;border:none}
 .global-footer-link:active{color:var(--blue)}
 .sorting-message{min-height:246px;margin:12px 0 0;color:var(--blue);font-size:15px;font-weight:700;line-height:1.95;white-space:pre-line;text-align:center}
 .sorting-message::after{content:"";display:inline-block;width:2px;height:1.15em;margin-left:3px;vertical-align:-.18em;background:var(--blue);animation:caretBlink .85s steps(1) infinite}
@@ -300,7 +300,7 @@ textarea.answer::placeholder{color:var(--ink-45)}
 <div class="app" id="app">
   <div id="screenRoot" style="flex:1 1 auto;min-height:0;display:flex;flex-direction:column"></div>
   <footer class="global-footer">
-    <a class="global-footer-link" id="globalBack" href="https://www.wamamamalife.com/">← 元のページに戻る</a>
+    <button type="button" class="global-footer-link" id="globalBack">← 一つ前に戻る</button>
   </footer>
 </div>
 
@@ -592,6 +592,7 @@ function header(){
 }
 
 function renderTop(){
+  state.screen = "top";
   clearIntroTimer();
   root().innerHTML = `
     ${header()}
@@ -663,6 +664,7 @@ function currentSelection(item){
 }
 
 function renderQuestion(){
+  state.screen = "q";
   saveState();
   const item = QUESTIONS[state.i];
   const sel = currentSelection(item);
@@ -806,6 +808,7 @@ function buildAckText(item){
 
 function playAckThenAdvance(item){
   if (document.activeElement && typeof document.activeElement.blur === "function") document.activeElement.blur();
+  state.screen = "ack";
   const reactionClass = REACTION[item.stamp] || "nodding";
   const ackText = buildAckText(item);
   root().innerHTML = `
@@ -1387,17 +1390,35 @@ function boot(){
 }
 boot();
 
-/* フッターの「戻る」：来た画面が分かる時は一つ前へ、直接開かれた時はTOPへ逃がす */
+/* フッターの「一つ前に戻る」：サイト外への遷移ではなく、ワーク内の一つ前の画面に戻す */
+function goBack(){
+  if (state.screen === "intro"){
+    if (state.introStep > 0){ state.introStep -= 1; renderIntro(); }
+    else { renderTop(); }
+    return;
+  }
+  if (state.screen === "ack"){
+    /* 相槌画面から戻る＝今答えた質問に戻って選び直せる */
+    renderQuestion();
+    return;
+  }
+  if (state.screen === "q"){
+    if (state.i > 0){ state.i -= 1; renderQuestion(); }
+    else { state.screen = "intro"; state.introStep = INTRO_MESSAGES.length - 1; renderIntro(); }
+    return;
+  }
+  if (state.screen === "sorting" || state.screen === "summary"){
+    state.screen = "q";
+    state.i = QUESTIONS.length - 1;
+    renderQuestion();
+    return;
+  }
+  /* トップ画面などそれ以上戻れない場合は何もしない */
+}
 (function(){
-  const backLink = document.getElementById("globalBack");
-  if (!backLink) return;
-  backLink.addEventListener("click", (e)=>{
-    if (document.referrer && history.length > 1){
-      e.preventDefault();
-      history.back();
-    }
-    /* referrerがない場合はhrefのTOPページへそのまま遷移させる */
-  });
+  const backBtn = document.getElementById("globalBack");
+  if (!backBtn) return;
+  backBtn.addEventListener("click", goBack);
 })();
 </script>
 </body>
