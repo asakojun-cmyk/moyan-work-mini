@@ -1421,5 +1421,115 @@ function goBack(){
   backBtn.addEventListener("click", goBack);
 })();
 </script>
+
+<!-- ================= もやんちゃん 相談チャットウィジェット ================= -->
+<div id="mcw-root"></div>
+<style>
+#mcw-root{position:fixed;right:16px;bottom:16px;z-index:9999;font-family:var(--font-round)}
+.mcw-fab{width:60px;height:60px;border-radius:50%;background:var(--blue);color:#fff;border:none;
+  box-shadow:0 8px 22px rgba(20,40,70,.28);display:flex;align-items:center;justify-content:center;
+  font-size:26px;cursor:pointer;transition:transform .15s var(--ease)}
+.mcw-fab:active{transform:scale(.94)}
+.mcw-panel{position:fixed;right:16px;bottom:90px;width:min(340px,calc(100vw - 32px));
+  max-height:min(560px,calc(100dvh - 120px));background:var(--white);border-radius:20px;
+  box-shadow:0 16px 44px rgba(20,40,70,.24);display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid var(--line)}
+.mcw-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:14px 16px;background:linear-gradient(180deg,var(--sky),var(--cream));border-bottom:1px solid var(--line)}
+.mcw-head strong{font-size:14px;color:var(--ink)}
+.mcw-close{background:none;border:none;font-size:18px;color:var(--ink-45);padding:4px;line-height:1}
+.mcw-body{flex:1 1 auto;overflow-y:auto;padding:16px}
+.mcw-greet{font-size:13.5px;color:var(--ink);line-height:1.7;margin:0 0 14px}
+.mcw-menu{display:flex;flex-direction:column;gap:8px}
+.mcw-choice{width:100%;text-align:left;padding:12px 14px;border-radius:14px;border:1px solid var(--button-line);
+  background:var(--sky);font-size:13px;font-weight:700;color:var(--ink)}
+.mcw-choice:active{background:var(--marker)}
+.mcw-back{background:none;border:none;color:var(--blue);font-size:12.5px;font-weight:700;padding:2px 0 12px;text-align:left}
+.mcw-detail-title{font-size:14.5px;font-weight:800;margin:0 0 8px}
+.mcw-detail-desc{font-size:13px;line-height:1.75;color:var(--ink-60);margin:0 0 14px}
+.mcw-price-row{display:flex;justify-content:space-between;align-items:baseline;
+  background:var(--cream);border-radius:12px;padding:10px 14px;margin:0 0 10px;font-size:12.5px}
+.mcw-price-row b{font-size:16px}
+.mcw-cta{display:block;width:100%;min-height:48px;border-radius:14px;border:none;background:var(--blue);
+  color:#fff;font-weight:800;font-size:14px;text-align:center;line-height:48px;text-decoration:none;margin-top:6px}
+.mcw-cta:active{background:#48567a}
+@media (max-width:380px){#mcw-root{right:10px;bottom:10px}.mcw-panel{right:10px;bottom:80px}}
+</style>
+<script>
+(function(){
+  var MCW_PHASES = {
+    free: {
+      label: "はじめての無料相談",
+      desc: "「まずは話を聞いてほしい」という方へ。今の状況やモヤモヤした気持ちを、ちゃんと一緒に整理する時間です。アドバイスの押し売りはしません。",
+      price: "無料",
+      duration: "30分"
+    },
+    proposal: {
+      label: "具体的な提案・お見積り",
+      desc: "状況はある程度整理できていて「次にどう動くか」を一緒に考えたい方へ。条件を明確にし、選択肢を2〜3案ご提案します。",
+      price: "9,000円（モニター価格 6,000円）",
+      duration: "60分"
+    },
+    followup: {
+      label: "前回の振り返り・継続相談",
+      desc: "前回のご相談から進んだこと・まだ悩んでいることを振り返りながら、次の一歩を一緒に考えます。",
+      price: "10,000円／回（3回目以降、都度払い）",
+      duration: "90分"
+    }
+  };
+  var MCW_BOOKING_URL = "booking.html";
+
+  var mcwState = { open: false, view: "menu", phase: null };
+
+  function mcwRender(){
+    var root = document.getElementById("mcw-root");
+    if (!mcwState.open){
+      root.innerHTML = '<button class="mcw-fab" id="mcwFab" aria-label="もやんちゃんに相談する">💬</button>';
+      document.getElementById("mcwFab").onclick = function(){ mcwState.open = true; mcwState.view = "menu"; mcwRender(); };
+      return;
+    }
+
+    var bodyHtml = "";
+    if (mcwState.view === "menu"){
+      bodyHtml =
+        '<p class="mcw-greet">モヤんだよ。今日はどうしたの？</p>' +
+        '<div class="mcw-menu">' +
+        Object.keys(MCW_PHASES).map(function(key){
+          return '<button class="mcw-choice" data-phase="' + key + '">' + MCW_PHASES[key].label + "</button>";
+        }).join("") +
+        "</div>";
+    } else if (mcwState.view === "detail"){
+      var p = MCW_PHASES[mcwState.phase];
+      bodyHtml =
+        '<button class="mcw-back" id="mcwBack">← 選び直す</button>' +
+        '<p class="mcw-detail-title">' + p.label + "</p>" +
+        '<p class="mcw-detail-desc">' + p.desc + "</p>" +
+        '<div class="mcw-price-row"><span>料金</span><b>' + p.price + "</b></div>" +
+        '<div class="mcw-price-row"><span>時間</span><b>' + p.duration + "</b></div>" +
+        '<a class="mcw-cta" id="mcwCta" href="' + MCW_BOOKING_URL + "?type=" + mcwState.phase + '" target="_blank" rel="noopener">この内容で予約する</a>';
+    }
+
+    root.innerHTML =
+      '<div class="mcw-panel">' +
+        '<div class="mcw-head"><strong>もやんちゃん</strong><button class="mcw-close" id="mcwClose" aria-label="閉じる">×</button></div>' +
+        '<div class="mcw-body">' + bodyHtml + "</div>" +
+      "</div>" +
+      '<button class="mcw-fab" id="mcwFab" aria-label="もやんちゃんを閉じる">💬</button>';
+
+    document.getElementById("mcwClose").onclick = function(){ mcwState.open = false; mcwRender(); };
+    document.getElementById("mcwFab").onclick = function(){ mcwState.open = false; mcwRender(); };
+    if (mcwState.view === "menu"){
+      Array.prototype.forEach.call(document.querySelectorAll(".mcw-choice"), function(btn){
+        btn.onclick = function(){ mcwState.view = "detail"; mcwState.phase = btn.getAttribute("data-phase"); mcwRender(); };
+      });
+    } else {
+      document.getElementById("mcwBack").onclick = function(){ mcwState.view = "menu"; mcwState.phase = null; mcwRender(); };
+    }
+  }
+
+  mcwRender();
+})();
+</script>
+<!-- ================= /もやんちゃん 相談チャットウィジェット ================= -->
 </body>
 </html>
