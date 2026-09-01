@@ -117,7 +117,7 @@ textarea{resize:vertical;min-height:64px}
   var LIFF_ID = "2011318904-tuhwTJNL";
 
   var params = new URLSearchParams(location.search);
-  var type = params.get("type") || "free";
+  var type = params.get("type");
 
   var pickedStart = null;
   var pickedLabel = "";
@@ -161,6 +161,20 @@ textarea{resize:vertical;min-height:64px}
       '<div class="price-row"><span>料金</span><b>' + c.priceLabel + "</b></div>" +
       '<div class="price-row"><span>時間</span><b>' + c.minutes + "分</b></div>";
     return data;
+  }
+
+  function renderTypeChooser(){
+    el("serviceCard").innerHTML =
+      "<h2>ご相談の内容を選んでください</h2>" +
+      '<button class="btn" id="chooseProposal" style="margin-bottom:10px">具体的な提案がほしい（60分・9,000円）</button>' +
+      '<button class="btn" id="chooseFollowup">前回の振り返りをしたい（90分・10,000円）</button>';
+    el("chooseProposal").addEventListener("click", function(){ selectType("proposal"); });
+    el("chooseFollowup").addEventListener("click", function(){ selectType("followup"); });
+  }
+
+  function selectType(t){
+    type = t;
+    fetchAvailability();
   }
 
   function renderSchedule(data){
@@ -258,7 +272,11 @@ textarea{resize:vertical;min-height:64px}
   el("submitBtn").addEventListener("click", submitBooking);
 
   tryInitLiff();
-  fetchAvailability();
+  if (type) {
+    fetchAvailability();
+  } else {
+    renderTypeChooser();
+  }
 })();
 </script>
 </body>
